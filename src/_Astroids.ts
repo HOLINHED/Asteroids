@@ -1,14 +1,12 @@
-class Astroids {
+class Astroids extends Game{
 
-   private p: p5;
    private player: Player;
    private rocks: Rock[] = new Array<Rock>();
    private bullets: Bullet[] = new Array<Bullet>();
    private score: number;
-   private running: boolean = true;
 
    constructor(p: p5) {
-      this.p = p;
+      super(p);
    }
 
    public setup() : void {
@@ -39,9 +37,5 @@ class Astroids {
          bullet.draw();
       }
 
-   }
-
-   public isRunning() : boolean {
-      return this.running;
    }
 }

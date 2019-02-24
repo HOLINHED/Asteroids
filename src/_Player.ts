@@ -25,6 +25,10 @@ class Player extends Entity{
       this.p.line(this.getPos().x, this.getPos().y, x, y);
    }
 
+   public setAngle(angle: number) : void {
+      this.angle = angle;
+   }
+
    public getAngle() : number{
       return this.angle;
    }

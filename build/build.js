@@ -1,34 +1,3 @@
-var Astroids = (function () {
-    function Astroids(p) {
-        this.rocks = new Array();
-        this.bullets = new Array();
-        this.running = true;
-        this.p = p;
-    }
-    Astroids.prototype.setup = function () {
-        this.score = 0;
-        this.player = new Player(this.p.width / 2, this.p.height / 2, this.p);
-        for (var i = 0; i < 10; i++) {
-            var x = this.p.random(this.p.width);
-            var y = this.p.random(this.p.height);
-            var bullet = new Bullet(x, y, this.p);
-            this.bullets.push(bullet);
-        }
-    };
-    Astroids.prototype.update = function () {
-        this.player.update();
-        this.player.draw();
-        for (var _i = 0, _a = this.bullets; _i < _a.length; _i++) {
-            var bullet = _a[_i];
-            bullet.update();
-            bullet.draw();
-        }
-    };
-    Astroids.prototype.isRunning = function () {
-        return this.running;
-    };
-    return Astroids;
-}());
 var Entity = (function () {
     function Entity(x, y) {
         this.x = x;
@@ -51,6 +20,19 @@ var Entity = (function () {
     };
     return Entity;
 }());
+var Game = (function () {
+    function Game(p) {
+        this.p = p;
+        this.running = true;
+    }
+    Game.prototype.setRunning = function (running) {
+        this.running = running;
+    };
+    Game.prototype.isRunning = function () {
+        return this.running;
+    };
+    return Game;
+}());
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -61,6 +43,35 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var Astroids = (function (_super) {
+    __extends(Astroids, _super);
+    function Astroids(p) {
+        var _this = _super.call(this, p) || this;
+        _this.rocks = new Array();
+        _this.bullets = new Array();
+        return _this;
+    }
+    Astroids.prototype.setup = function () {
+        this.score = 0;
+        this.player = new Player(this.p.width / 2, this.p.height / 2, this.p);
+        for (var i = 0; i < 10; i++) {
+            var x = this.p.random(this.p.width);
+            var y = this.p.random(this.p.height);
+            var bullet = new Bullet(x, y, this.p);
+            this.bullets.push(bullet);
+        }
+    };
+    Astroids.prototype.update = function () {
+        this.player.update();
+        this.player.draw();
+        for (var _i = 0, _a = this.bullets; _i < _a.length; _i++) {
+            var bullet = _a[_i];
+            bullet.update();
+            bullet.draw();
+        }
+    };
+    return Astroids;
+}(Game));
 var Bullet = (function (_super) {
     __extends(Bullet, _super);
     function Bullet(x, y, p) {
@@ -89,6 +100,9 @@ var Player = (function (_super) {
         var y = (this.RADIUS * this.p.sin(this.angle)) + this.getPos().y;
         this.p.line(this.getPos().x, this.getPos().y, x, y);
     };
+    Player.prototype.setAngle = function (angle) {
+        this.angle = angle;
+    };
     Player.prototype.getAngle = function () {
         return this.angle;
     };
@@ -104,18 +118,18 @@ var Rock = (function (_super) {
     return Rock;
 }(Entity));
 var sketch = function (p) {
-    var Game;
+    var game;
     p.setup = function () {
         p.createCanvas(600, 600);
-        Game = new Astroids(p);
-        Game.setup();
+        game = new Astroids(p);
+        game.setup();
     };
     p.draw = function () {
         p.background(0);
-        if (!Game.isRunning()) {
-            Game = new Astroids(p);
+        if (!game.isRunning()) {
+            game = new Astroids(p);
         }
-        Game.update();
+        game.update();
     };
 };
 var sketchP = new p5(sketch);

@@ -1,21 +1,21 @@
 var sketch = (p: p5) => {
 
-    let Game: Astroids;
+    let game: Game;
     
     p.setup = () => {
         p.createCanvas(600, 600);
-        Game = new Astroids(p);
-        Game.setup();
+        game = new Astroids(p);
+        game.setup();
     }
 
     p.draw = () => {
         p.background(0);
 
-        if (!Game.isRunning()) {
-            Game = new Astroids(p);
+        if (!game.isRunning()) {
+            game = new Astroids(p);
         }
 
-        Game.update();
+        game.update();
     }
 }
 
