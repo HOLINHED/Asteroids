@@ -55,17 +55,28 @@ var Input = (function () {
     function Input(p) {
         this.p = p;
         this.key = { code: 0 };
+        this.mouse = { pressed: false };
         var pointer = this.p;
         var keyPointer = this.key;
+        var mousePointer = this.mouse;
         this.p.keyPressed = function () {
             keyPointer.code = pointer.keyCode;
         };
         this.p.keyReleased = function () {
             keyPointer.code = 0;
         };
+        this.p.mousePressed = function () {
+            mousePointer.pressed = true;
+        };
+        this.p.mouseReleased = function () {
+            mousePointer.pressed = false;
+        };
     }
     Input.prototype.getKey = function () {
         return this.key.code;
+    };
+    Input.prototype.isPressed = function () {
+        return this.mouse.pressed;
     };
     return Input;
 }());
