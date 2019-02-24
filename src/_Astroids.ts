@@ -15,7 +15,7 @@ class Astroids extends Game {
       this.score = 0;
       this.io = new Input(this.p);
 
-      this.player = new Player(this.p.width/2, this.p.height/2,this.p);
+      this.player = new Player(this.p.width/2, this.p.height/2,this.p,this);
 
       const r: number = this.p.random(7,14);
       
@@ -25,7 +25,7 @@ class Astroids extends Game {
          const y = this.p.random(this.p.height);
 
          const size = this.p.random(70,135);
-         const rock: Rock = new Rock(x,y,size,this.p);
+         const rock: Rock = new Rock(x,y,size,this.p,this);
 
          this.rocks.push(rock);
       }
@@ -33,12 +33,6 @@ class Astroids extends Game {
    }
 
    public update() : void {
-
-      if(this.io.getKey() == 37) {
-         this.player.setVx(-5);
-      } else {
-         this.player.setVx(0);
-      }
 
       this.checkKey();
 
@@ -59,12 +53,19 @@ class Astroids extends Game {
 
    protected checkKey() : void {
       switch(this.io.getKey()) {
-         case 37: this.player.setVx(-5);break;
-         case 38: this.player.setVy(-5);break;
-         case 39: this.player.setVx(5);break;
-         case 40: this.player.setVy(5);break;
+         case 65: this.player.setVx(-5);break;     // GO LEFT
+         case 87: this.player.setVy(-5);break;     // GO UP
+         case 68: this.player.setVx(5);break;      // GO RIGHT
+         case 83: this.player.setVy(5);break;      // GO DOWN
+         case 37: this.player.increment(-1);break; // Decrease angle of cannon
+         case 39: this.player.increment(1);break;  // Increase angle of cannon
+         case 32: this.player.shoot();break;       // Create new bullet and add to array
          default: this.player.setVx(0);this.player.setVy(0);
       }
+   }
+
+   public share() : Bullet[] {
+      return this.bullets;
    }
 
 }

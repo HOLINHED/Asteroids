@@ -2,8 +2,8 @@ class Rock extends Entity {
 
    private size: number;
 
-   constructor(x: number, y: number, size: number, p: p5) {
-      super(x,y,size,size,p);
+   constructor(x: number, y: number, size: number, p: p5, c: Game) {
+      super(x,y,size,size,p,c);
       this.p = p;
       this.size = size;
    }

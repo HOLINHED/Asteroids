@@ -1,10 +1,11 @@
 var Entity = (function () {
-    function Entity(x, y, width, height, p) {
+    function Entity(x, y, width, height, p, c) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.p = p;
+        this.context = c;
         this.vx = 0;
         this.vy = 0;
     }
@@ -25,6 +26,9 @@ var Entity = (function () {
         if (this.y < 0 - this.height / 2) {
             this.y = height - this.height / 2;
         }
+    };
+    Entity.prototype.isColliding = function (entity) {
+        return false;
     };
     Entity.prototype.setVx = function (vx) {
         this.vx = vx;
@@ -101,23 +105,17 @@ var Astroids = (function (_super) {
     Astroids.prototype.setup = function () {
         this.score = 0;
         this.io = new Input(this.p);
-        this.player = new Player(this.p.width / 2, this.p.height / 2, this.p);
+        this.player = new Player(this.p.width / 2, this.p.height / 2, this.p, this);
         var r = this.p.random(7, 14);
         for (var i = 0; i < r; i++) {
             var x = this.p.random(this.p.width);
             var y = this.p.random(this.p.height);
             var size = this.p.random(70, 135);
-            var rock = new Rock(x, y, size, this.p);
+            var rock = new Rock(x, y, size, this.p, this);
             this.rocks.push(rock);
         }
     };
     Astroids.prototype.update = function () {
-        if (this.io.getKey() == 37) {
-            this.player.setVx(-5);
-        }
-        else {
-            this.player.setVx(0);
-        }
         this.checkKey();
         this.player.update();
         this.player.draw();
@@ -134,31 +132,43 @@ var Astroids = (function (_super) {
     };
     Astroids.prototype.checkKey = function () {
         switch (this.io.getKey()) {
-            case 37:
+            case 65:
                 this.player.setVx(-5);
                 break;
-            case 38:
+            case 87:
                 this.player.setVy(-5);
                 break;
-            case 39:
+            case 68:
                 this.player.setVx(5);
                 break;
-            case 40:
+            case 83:
                 this.player.setVy(5);
+                break;
+            case 37:
+                this.player.increment(-1);
+                break;
+            case 39:
+                this.player.increment(1);
+                break;
+            case 32:
+                this.player.shoot();
                 break;
             default:
                 this.player.setVx(0);
                 this.player.setVy(0);
         }
     };
+    Astroids.prototype.share = function () {
+        return this.bullets;
+    };
     return Astroids;
 }(Game));
 var Bullet = (function (_super) {
     __extends(Bullet, _super);
-    function Bullet(x, y, p) {
+    function Bullet(x, y, p, c) {
         var _this = this;
         var BULLET_SIZE = 10;
-        _this = _super.call(this, x, y, BULLET_SIZE, BULLET_SIZE, p) || this;
+        _this = _super.call(this, x, y, BULLET_SIZE, BULLET_SIZE, p, c) || this;
         _this.p = p;
         return _this;
     }
@@ -171,13 +181,14 @@ var Bullet = (function (_super) {
 }(Entity));
 var Player = (function (_super) {
     __extends(Player, _super);
-    function Player(x, y, p) {
+    function Player(x, y, p, c) {
         var _this = this;
         var RADIUS = 35;
-        _this = _super.call(this, x, y, RADIUS, RADIUS, p) || this;
+        _this = _super.call(this, x, y, RADIUS, RADIUS, p, c) || this;
         _this.p = p;
         _this.angle = 0;
         _this.radius = RADIUS;
+        _this.CANNON_SPEED = _this.p.PI / 25;
         return _this;
     }
     Player.prototype.draw = function () {
@@ -188,8 +199,19 @@ var Player = (function (_super) {
         var y = (this.radius * this.p.sin(this.angle)) + this.getPos().y;
         this.p.line(this.getPos().x, this.getPos().y, x, y);
     };
-    Player.prototype.setAngle = function (angle) {
-        this.angle = angle;
+    Player.prototype.shoot = function () {
+        var x = (this.p.cos(this.angle) * 25) + this.getPos().x;
+        var y = (this.p.sin(this.angle) * 25) + this.getPos().y;
+        var vx = x - this.getPos().x;
+        var vy = y - this.getPos().y;
+        var bullets = this.context.share();
+        var bullet = new Bullet(x, y, this.p, this.context);
+        bullet.setVx(vx);
+        bullet.setVy(vy);
+        bullets.push(bullet);
+    };
+    Player.prototype.increment = function (mult) {
+        this.angle += this.CANNON_SPEED * mult;
     };
     Player.prototype.getAngle = function () {
         return this.angle;
@@ -198,8 +220,8 @@ var Player = (function (_super) {
 }(Entity));
 var Rock = (function (_super) {
     __extends(Rock, _super);
-    function Rock(x, y, size, p) {
-        var _this = _super.call(this, x, y, size, size, p) || this;
+    function Rock(x, y, size, p, c) {
+        var _this = _super.call(this, x, y, size, size, p, c) || this;
         _this.p = p;
         _this.size = size;
         return _this;

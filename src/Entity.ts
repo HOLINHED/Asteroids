@@ -7,14 +7,16 @@ abstract class Entity {
    private width: number;
    private height: number;
    public p: p5;
+   public context: Game;
 
-   constructor(x: number, y: number, width: number, height: number, p: p5) {
+   constructor(x: number, y: number, width: number, height: number, p: p5, c: Game) {
 
       this.x = x;
       this.y = y;
       this.width = width;
       this.height = height;
       this.p = p;
+      this.context = c;
 
       this.vx = 0;
       this.vy = 0;
@@ -45,6 +47,10 @@ abstract class Entity {
          this.y = height - this.height / 2
       }
 
+   }
+
+   public isColliding(entity: Entity) : boolean {
+      return false;
    }
 
    public setVx(vx: number) : void {

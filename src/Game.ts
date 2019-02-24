@@ -16,6 +16,8 @@ abstract class Game {
 
    protected abstract checkKey() : void;
 
+   abstract share() : any;
+
    public setRunning(running: boolean) : void {
       this.running = running;
    }
