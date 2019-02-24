@@ -40,6 +40,8 @@ class Astroids extends Game {
          this.player.setVx(0);
       }
 
+      this.checkKey();
+
       this.player.update();
       this.player.draw();
 
@@ -54,4 +56,15 @@ class Astroids extends Game {
       }
 
    }
+
+   protected checkKey() : void {
+      switch(this.io.getKey()) {
+         case 37: this.player.setVx(-5);break;
+         case 38: this.player.setVy(-5);break;
+         case 39: this.player.setVx(5);break;
+         case 40: this.player.setVy(5);break;
+         default: this.player.setVx(0);this.player.setVy(0);
+      }
+   }
+
 }

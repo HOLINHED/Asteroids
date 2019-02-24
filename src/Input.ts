@@ -1,5 +1,7 @@
 class Input{
 
+   // TODO: Implement null movement
+
    private p: p5;
    private key: { code: number };
 

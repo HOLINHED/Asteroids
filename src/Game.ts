@@ -14,6 +14,8 @@ abstract class Game {
 
    abstract update() : void;
 
+   protected abstract checkKey() : void;
+
    public setRunning(running: boolean) : void {
       this.running = running;
    }
