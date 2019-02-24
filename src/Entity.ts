@@ -4,11 +4,18 @@ abstract class Entity {
    private y: number;
    private vx: number;
    private vy: number;
+   private width: number;
+   private height: number;
+   public p: p5;
 
-   constructor(x: number, y: number) {
+   constructor(x: number, y: number, width: number, height: number, p: p5) {
 
       this.x = x;
       this.y = y;
+      this.width = width;
+      this.height = height;
+      this.p = p;
+
       this.vx = 0;
       this.vy = 0;
 
@@ -18,6 +25,25 @@ abstract class Entity {
       
       this.x += this.vx;
       this.y += this.vy;
+
+      const width = this.p.width;
+      const height = this.p.height;
+
+      if (this.x > width + this.width / 2) {
+         this.x = 0 - this.width / 2;
+      }
+
+      if (this.x < 0 - this.width / 2) {
+         this.x = width - this.width / 2
+      }
+
+      if (this.y > height + this.height / 2) {
+         this.y = 0 - this.height / 2;
+      }
+
+      if (this.y < 0 - this.height / 2) {
+         this.y = height - this.height / 2
+      }
 
    }
 

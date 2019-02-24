@@ -4,6 +4,7 @@ class Astroids extends Game {
    private rocks: Rock[] = new Array<Rock>();
    private bullets: Bullet[] = new Array<Bullet>();
    private score: number;
+   private io: Input;
 
    constructor(p: p5) {
       super(p);
@@ -12,6 +13,7 @@ class Astroids extends Game {
    public setup() : void {
       
       this.score = 0;
+      this.io = new Input(this.p);
 
       this.player = new Player(this.p.width/2, this.p.height/2,this.p);
 
@@ -22,7 +24,8 @@ class Astroids extends Game {
          const x = this.p.random(this.p.width);
          const y = this.p.random(this.p.height);
 
-         const rock: Rock = new Rock(x,y,this.p);
+         const size = this.p.random(70,135);
+         const rock: Rock = new Rock(x,y,size,this.p);
 
          this.rocks.push(rock);
       }
@@ -30,6 +33,12 @@ class Astroids extends Game {
    }
 
    public update() : void {
+
+      if(this.io.getKey() == 37) {
+         this.player.setVx(-5);
+      } else {
+         this.player.setVx(0);
+      }
 
       this.player.update();
       this.player.draw();

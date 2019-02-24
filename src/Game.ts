@@ -6,6 +6,8 @@ abstract class Game {
    constructor(p: p5) {
       this.p = p;
       this.running = true;
+
+      this.p.rectMode('center');
    }
 
    abstract setup() : void;

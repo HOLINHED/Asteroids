@@ -1,13 +1,30 @@
 var Entity = (function () {
-    function Entity(x, y) {
+    function Entity(x, y, width, height, p) {
         this.x = x;
         this.y = y;
+        this.width = width;
+        this.height = height;
+        this.p = p;
         this.vx = 0;
         this.vy = 0;
     }
     Entity.prototype.update = function () {
         this.x += this.vx;
         this.y += this.vy;
+        var width = this.p.width;
+        var height = this.p.height;
+        if (this.x > width + this.width / 2) {
+            this.x = 0 - this.width / 2;
+        }
+        if (this.x < 0 - this.width / 2) {
+            this.x = width - this.width / 2;
+        }
+        if (this.y > height + this.height / 2) {
+            this.y = 0 - this.height / 2;
+        }
+        if (this.y < 0 - this.height / 2) {
+            this.y = height - this.height / 2;
+        }
     };
     Entity.prototype.setVx = function (vx) {
         this.vx = vx;
@@ -24,6 +41,7 @@ var Game = (function () {
     function Game(p) {
         this.p = p;
         this.running = true;
+        this.p.rectMode('center');
     }
     Game.prototype.setRunning = function (running) {
         this.running = running;
@@ -32,6 +50,24 @@ var Game = (function () {
         return this.running;
     };
     return Game;
+}());
+var Input = (function () {
+    function Input(p) {
+        this.p = p;
+        this.key = { code: 0 };
+        var pointer = this.p;
+        var keyPointer = this.key;
+        this.p.keyPressed = function () {
+            keyPointer.code = pointer.keyCode;
+        };
+        this.p.keyReleased = function () {
+            keyPointer.code = 0;
+        };
+    }
+    Input.prototype.getKey = function () {
+        return this.key.code;
+    };
+    return Input;
 }());
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -53,16 +89,24 @@ var Astroids = (function (_super) {
     }
     Astroids.prototype.setup = function () {
         this.score = 0;
+        this.io = new Input(this.p);
         this.player = new Player(this.p.width / 2, this.p.height / 2, this.p);
         var r = this.p.random(7, 14);
         for (var i = 0; i < r; i++) {
             var x = this.p.random(this.p.width);
             var y = this.p.random(this.p.height);
-            var rock = new Rock(x, y, this.p);
+            var size = this.p.random(70, 135);
+            var rock = new Rock(x, y, size, this.p);
             this.rocks.push(rock);
         }
     };
     Astroids.prototype.update = function () {
+        if (this.io.getKey() == 37) {
+            this.player.setVx(-5);
+        }
+        else {
+            this.player.setVx(0);
+        }
         this.player.update();
         this.player.draw();
         for (var _i = 0, _a = this.bullets; _i < _a.length; _i++) {
@@ -81,7 +125,9 @@ var Astroids = (function (_super) {
 var Bullet = (function (_super) {
     __extends(Bullet, _super);
     function Bullet(x, y, p) {
-        var _this = _super.call(this, x, y) || this;
+        var _this = this;
+        var BULLET_SIZE = 10;
+        _this = _super.call(this, x, y, BULLET_SIZE, BULLET_SIZE, p) || this;
         _this.p = p;
         return _this;
     }
@@ -95,18 +141,20 @@ var Bullet = (function (_super) {
 var Player = (function (_super) {
     __extends(Player, _super);
     function Player(x, y, p) {
-        var _this = _super.call(this, x, y) || this;
-        _this.RADIUS = 35;
+        var _this = this;
+        var RADIUS = 35;
+        _this = _super.call(this, x, y, RADIUS, RADIUS, p) || this;
         _this.p = p;
         _this.angle = 0;
+        _this.radius = RADIUS;
         return _this;
     }
     Player.prototype.draw = function () {
         this.p.noFill();
         this.p.stroke(255);
-        this.p.ellipse(this.getPos().x, this.getPos().y, this.RADIUS);
-        var x = (this.RADIUS * this.p.cos(this.angle)) + this.getPos().x;
-        var y = (this.RADIUS * this.p.sin(this.angle)) + this.getPos().y;
+        this.p.ellipse(this.getPos().x, this.getPos().y, this.radius);
+        var x = (this.radius * this.p.cos(this.angle)) + this.getPos().x;
+        var y = (this.radius * this.p.sin(this.angle)) + this.getPos().y;
         this.p.line(this.getPos().x, this.getPos().y, x, y);
     };
     Player.prototype.setAngle = function (angle) {
@@ -119,10 +167,10 @@ var Player = (function (_super) {
 }(Entity));
 var Rock = (function (_super) {
     __extends(Rock, _super);
-    function Rock(x, y, p) {
-        var _this = _super.call(this, x, y) || this;
+    function Rock(x, y, size, p) {
+        var _this = _super.call(this, x, y, size, size, p) || this;
         _this.p = p;
-        _this.size = _this.p.random(50, 140);
+        _this.size = size;
         return _this;
     }
     Rock.prototype.draw = function () {
