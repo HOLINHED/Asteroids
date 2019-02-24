@@ -175,6 +175,12 @@ var Bullet = (function (_super) {
     Bullet.prototype.draw = function () {
         this.p.noFill();
         this.p.stroke(255);
+        if (this.getPos().x > this.p.width || this.getPos().x < 0) {
+            this.context.share().splice(this);
+        }
+        if (this.getPos().y > this.p.height || this.getPos().y < 0) {
+            this.context.share().splice(this);
+        }
         this.p.ellipse(this.getPos().x, this.getPos().y, 5);
     };
     return Bullet;
