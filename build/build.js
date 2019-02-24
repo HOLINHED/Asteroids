@@ -54,11 +54,12 @@ var Astroids = (function (_super) {
     Astroids.prototype.setup = function () {
         this.score = 0;
         this.player = new Player(this.p.width / 2, this.p.height / 2, this.p);
-        for (var i = 0; i < 10; i++) {
+        var r = this.p.random(7, 14);
+        for (var i = 0; i < r; i++) {
             var x = this.p.random(this.p.width);
             var y = this.p.random(this.p.height);
-            var bullet = new Bullet(x, y, this.p);
-            this.bullets.push(bullet);
+            var rock = new Rock(x, y, this.p);
+            this.rocks.push(rock);
         }
     };
     Astroids.prototype.update = function () {
@@ -68,6 +69,11 @@ var Astroids = (function (_super) {
             var bullet = _a[_i];
             bullet.update();
             bullet.draw();
+        }
+        for (var _b = 0, _c = this.rocks; _b < _c.length; _b++) {
+            var rock = _c[_b];
+            rock.update();
+            rock.draw();
         }
     };
     return Astroids;
@@ -80,6 +86,9 @@ var Bullet = (function (_super) {
         return _this;
     }
     Bullet.prototype.draw = function () {
+        this.p.noFill();
+        this.p.stroke(255);
+        this.p.ellipse(this.getPos().x, this.getPos().y, 5);
     };
     return Bullet;
 }(Entity));
@@ -110,10 +119,16 @@ var Player = (function (_super) {
 }(Entity));
 var Rock = (function (_super) {
     __extends(Rock, _super);
-    function Rock(x, y) {
-        return _super.call(this, x, y) || this;
+    function Rock(x, y, p) {
+        var _this = _super.call(this, x, y) || this;
+        _this.p = p;
+        _this.size = _this.p.random(50, 140);
+        return _this;
     }
     Rock.prototype.draw = function () {
+        this.p.fill(255);
+        this.p.noStroke();
+        this.p.ellipse(this.getPos().x, this.getPos().y, this.size);
     };
     return Rock;
 }(Entity));

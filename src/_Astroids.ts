@@ -1,4 +1,4 @@
-class Astroids extends Game{
+class Astroids extends Game {
 
    private player: Player;
    private rocks: Rock[] = new Array<Rock>();
@@ -15,14 +15,16 @@ class Astroids extends Game{
 
       this.player = new Player(this.p.width/2, this.p.height/2,this.p);
 
-      for (let i = 0; i < 10; i++) {
+      const r: number = this.p.random(7,14);
+      
+      for (let i = 0; i < r; i++) {
          
          const x = this.p.random(this.p.width);
          const y = this.p.random(this.p.height);
 
-         const bullet: Bullet = new Bullet(x,y,this.p);
+         const rock: Rock = new Rock(x,y,this.p);
 
-         this.bullets.push(bullet);
+         this.rocks.push(rock);
       }
 
    }
@@ -35,6 +37,11 @@ class Astroids extends Game{
       for (let bullet of this.bullets) {
          bullet.update();
          bullet.draw();
+      }
+
+      for (let rock of this.rocks) {
+         rock.update();
+         rock.draw();
       }
 
    }

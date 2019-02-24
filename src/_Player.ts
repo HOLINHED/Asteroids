@@ -1,4 +1,4 @@
-class Player extends Entity{
+class Player extends Entity {
 
    private RADIUS: number = 35;
    private angle: number;

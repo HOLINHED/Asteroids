@@ -9,6 +9,10 @@ class Bullet extends Entity {
 
    public draw() : void{
       
+      this.p.noFill();
+      this.p.stroke(255);
+      
+      this.p.ellipse(this.getPos().x, this.getPos().y, 5);
    }
 
 }
