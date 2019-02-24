@@ -32,14 +32,14 @@ class Player extends Entity {
 
    public shoot() : void {
 
-      const x = (this.p.cos(this.angle) * 25) + this.getPos().x;
-      const y = (this.p.sin(this.angle) * 25) + this.getPos().y;
-      const vx = x - this.getPos().x;
-      const vy = y - this.getPos().y;
+      const x: number = (this.p.cos(this.angle) * 25) + this.getPos().x;
+      const y: number = (this.p.sin(this.angle) * 25) + this.getPos().y;
+      const vx: number = x - this.getPos().x;
+      const vy: number = y - this.getPos().y;
 
       const bullets: Bullet[] = this.context.share();
 
-      const bullet = new Bullet(x,y,this.p,this.context);
+      const bullet: Bullet = new Bullet(x,y,this.p,this.context);
 
       bullet.setVx(vx);
       bullet.setVy(vy);

@@ -224,6 +224,10 @@ var Rock = (function (_super) {
         var _this = _super.call(this, x, y, size, size, p, c) || this;
         _this.p = p;
         _this.size = size;
+        var vx = _this.p.random(-7, 7);
+        var vy = _this.p.random(-6, 8);
+        _this.setVx(vx);
+        _this.setVy(vy);
         return _this;
     }
     Rock.prototype.draw = function () {

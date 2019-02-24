@@ -6,6 +6,13 @@ class Rock extends Entity {
       super(x,y,size,size,p,c);
       this.p = p;
       this.size = size;
+
+      const vx: number = this.p.random(-7,7);
+      const vy: number = this.p.random(-6,8);
+
+      this.setVx(vx);
+      this.setVy(vy);
+
    }
 
    public draw() : void{
