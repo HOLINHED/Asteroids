@@ -29,11 +29,8 @@ abstract class Entity {
       this.vy = vy;
    }
 
-   public getPos() {
-
-      const obj: {x: number, y: number} = {x: this.x, y: this.y};
-
-      return obj;
+   public getPos() : {x: number, y: number} {
+      return {x: this.x, y: this.y};
    }
 
    abstract draw() : void;

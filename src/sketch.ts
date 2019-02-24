@@ -10,6 +10,11 @@ var sketch = (p: p5) => {
 
     p.draw = () => {
         p.background(0);
+
+        if (!Game.isRunning()) {
+            Game = new Astroids(p);
+        }
+
         Game.update();
     }
 }

@@ -6,17 +6,23 @@ var Astroids = (function () {
         this.p = p;
     }
     Astroids.prototype.setup = function () {
+        this.score = 0;
         this.player = new Player(this.p.width / 2, this.p.height / 2, this.p);
         for (var i = 0; i < 10; i++) {
             var x = this.p.random(this.p.width);
             var y = this.p.random(this.p.height);
-            var b = new Bullet(x, y, this.p);
-            this.bullets.push();
+            var bullet = new Bullet(x, y, this.p);
+            this.bullets.push(bullet);
         }
     };
     Astroids.prototype.update = function () {
         this.player.update();
         this.player.draw();
+        for (var _i = 0, _a = this.bullets; _i < _a.length; _i++) {
+            var bullet = _a[_i];
+            bullet.update();
+            bullet.draw();
+        }
     };
     Astroids.prototype.isRunning = function () {
         return this.running;
@@ -41,8 +47,7 @@ var Entity = (function () {
         this.vy = vy;
     };
     Entity.prototype.getPos = function () {
-        var obj = { x: this.x, y: this.y };
-        return obj;
+        return { x: this.x, y: this.y };
     };
     return Entity;
 }());
@@ -71,11 +76,18 @@ var Player = (function (_super) {
     __extends(Player, _super);
     function Player(x, y, p) {
         var _this = _super.call(this, x, y) || this;
+        _this.RADIUS = 35;
         _this.p = p;
+        _this.angle = 0;
         return _this;
     }
     Player.prototype.draw = function () {
-        this.p.rect(this.getPos().x, this.getPos().y, 50, 50);
+        this.p.noFill();
+        this.p.stroke(255);
+        this.p.ellipse(this.getPos().x, this.getPos().y, this.RADIUS);
+        var x = (this.RADIUS * this.p.cos(this.angle)) + this.getPos().x;
+        var y = (this.RADIUS * this.p.sin(this.angle)) + this.getPos().y;
+        this.p.line(this.getPos().x, this.getPos().y, x, y);
     };
     Player.prototype.getAngle = function () {
         return this.angle;
@@ -100,6 +112,9 @@ var sketch = function (p) {
     };
     p.draw = function () {
         p.background(0);
+        if (!Game.isRunning()) {
+            Game = new Astroids(p);
+        }
         Game.update();
     };
 };
