@@ -29,7 +29,7 @@ abstract class Entity {
       this.vy = vy;
    }
 
-   public getPos() : Object{
+   public getPos() {
 
       const obj: {x: number, y: number} = {x: this.x, y: this.y};
 

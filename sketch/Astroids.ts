@@ -13,10 +13,24 @@ class Astroids {
 
    public setup() : void {
       
+      this.player = new Player(this.p.width/2, this.p.height/2,this.p);
+
+      for (let i = 0; i < 10; i++) {
+         
+         const x = this.p.random(this.p.width);
+         const y = this.p.random(this.p.height);
+
+         const b: Bullet = new Bullet(x,y,this.p);
+
+         this.bullets.push();
+      }
+
    }
 
    public update() : void {
-      
+
+      this.player.update();
+      this.player.draw();
    }
 
    public isRunning() : boolean {
