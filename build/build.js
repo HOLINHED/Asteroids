@@ -250,6 +250,7 @@ var Rock = (function (_super) {
         _this.radii = new Array();
         _this.p = p;
         _this.size = size;
+        _this.angle = 0;
         var vx = _this.p.random(-7, 7);
         var vy = _this.p.random(-6, 8);
         _this.setVx(vx);
@@ -264,15 +265,18 @@ var Rock = (function (_super) {
         this.p.noFill();
         this.p.stroke(255);
         var currR = 0;
+        this.p.push();
+        this.p.translate(this.getPos().x, this.getPos().y);
         this.p.beginShape();
         for (var a = 0; a < this.p.TWO_PI; a += this.p.PI / 10) {
             var r = this.radii[currR];
-            var x = (r * this.p.cos(a)) + this.getPos().x;
-            var y = (r * this.p.sin(a)) + this.getPos().y;
+            var x = (r * this.p.cos(a));
+            var y = (r * this.p.sin(a));
             this.p.vertex(x, y);
             currR = currR < this.radii.length ? currR + 1 : 0;
         }
         this.p.endShape(this.p.CLOSE);
+        this.p.pop();
     };
     Rock.prototype.split = function () {
     };
@@ -280,6 +284,8 @@ var Rock = (function (_super) {
 }(Entity));
 var sketch = function (p) {
     var game;
+    var maxFPS = 0;
+    var minFPS = 100;
     p.setup = function () {
         p.createCanvas(600, 600);
         game = new Astroids(p);
@@ -287,10 +293,16 @@ var sketch = function (p) {
     };
     p.draw = function () {
         p.background(0);
+        if (p.frameRate() > maxFPS)
+            maxFPS = p.frameRate();
+        if (p.frameRate() < minFPS && p.frameCount > 1)
+            minFPS = p.frameRate();
         p.fill(0, 255, 255);
         p.textSize(12);
         p.noStroke();
-        p.text("FPS: " + p.frameRate().toFixed(0), p.width - 55, 20);
+        p.text("FPS: " + p.frameRate().toFixed(0), p.width - 82, 20);
+        p.text("MAX FPS: " + maxFPS.toFixed(0), p.width - 82, 40);
+        p.text("MIN FPS: " + minFPS.toFixed(0), p.width - 82, 60);
         if (!game.isRunning()) {
             game = new Astroids(p);
         }
