@@ -205,7 +205,6 @@ var Player = (function (_super) {
     }
     Player.prototype.draw = function () {
         this.coolDown = this.coolDown > 0 ? this.coolDown - 1 : 0;
-        console.log(this.coolDown);
         this.p.strokeWeight(2);
         this.p.noFill();
         this.p.stroke(255);

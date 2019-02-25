@@ -20,7 +20,6 @@ class Player extends Entity {
    public draw() : void{
 
       this.coolDown = this.coolDown > 0 ? this.coolDown - 1 : 0;
-      console.log(this.coolDown);
    
       this.p.strokeWeight(2);
       this.p.noFill();
