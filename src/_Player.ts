@@ -3,6 +3,7 @@ class Player extends Entity {
    private radius: number;
    private angle: number;
    private CANNON_SPEED: number;
+   private coolDown: number;
 
    constructor(x: number, y: number, p: p5, c: Game) {
 
@@ -13,9 +14,13 @@ class Player extends Entity {
       this.angle = 0;
       this.radius = RADIUS;
       this.CANNON_SPEED = this.p.PI / 25;
+      this.coolDown = 0;
    }
 
    public draw() : void{
+
+      this.coolDown = this.coolDown > 0 ? this.coolDown - 1 : 0;
+      console.log(this.coolDown);
    
       this.p.strokeWeight(2);
       this.p.noFill();
@@ -37,19 +42,25 @@ class Player extends Entity {
 
    public shoot() : void {
 
-      const x: number = (this.p.cos(this.angle) * 25) + this.getPos().x;
-      const y: number = (this.p.sin(this.angle) * 25) + this.getPos().y;
-      const vx: number = x - this.getPos().x;
-      const vy: number = y - this.getPos().y;
+      if (this.coolDown == 0) {
 
-      const bullets: Bullet[] = this.context.share();
+         const x: number = (this.p.cos(this.angle) * 25) + this.getPos().x;
+         const y: number = (this.p.sin(this.angle) * 25) + this.getPos().y;
+         const vx: number = x - this.getPos().x;
+         const vy: number = y - this.getPos().y;
 
-      const bullet: Bullet = new Bullet(x,y,this.p,this.context);
+         const bullets: Bullet[] = this.context.share();
 
-      bullet.setVx(vx);
-      bullet.setVy(vy);
+         const bullet: Bullet = new Bullet(x,y,this.p,this.context);
 
-      bullets.push(bullet);
+         bullet.setVx(vx);
+         bullet.setVy(vy);
+
+         bullets.push(bullet);
+
+         this.coolDown = 20;
+
+      }
 
    } 
 

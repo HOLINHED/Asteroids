@@ -200,9 +200,12 @@ var Player = (function (_super) {
         _this.angle = 0;
         _this.radius = RADIUS;
         _this.CANNON_SPEED = _this.p.PI / 25;
+        _this.coolDown = 0;
         return _this;
     }
     Player.prototype.draw = function () {
+        this.coolDown = this.coolDown > 0 ? this.coolDown - 1 : 0;
+        console.log(this.coolDown);
         this.p.strokeWeight(2);
         this.p.noFill();
         this.p.stroke(255);
@@ -216,15 +219,18 @@ var Player = (function (_super) {
         this.p.pop();
     };
     Player.prototype.shoot = function () {
-        var x = (this.p.cos(this.angle) * 25) + this.getPos().x;
-        var y = (this.p.sin(this.angle) * 25) + this.getPos().y;
-        var vx = x - this.getPos().x;
-        var vy = y - this.getPos().y;
-        var bullets = this.context.share();
-        var bullet = new Bullet(x, y, this.p, this.context);
-        bullet.setVx(vx);
-        bullet.setVy(vy);
-        bullets.push(bullet);
+        if (this.coolDown == 0) {
+            var x = (this.p.cos(this.angle) * 25) + this.getPos().x;
+            var y = (this.p.sin(this.angle) * 25) + this.getPos().y;
+            var vx = x - this.getPos().x;
+            var vy = y - this.getPos().y;
+            var bullets = this.context.share();
+            var bullet = new Bullet(x, y, this.p, this.context);
+            bullet.setVx(vx);
+            bullet.setVy(vy);
+            bullets.push(bullet);
+            this.coolDown = 20;
+        }
     };
     Player.prototype.increment = function (mult) {
         this.angle += this.CANNON_SPEED * mult;
