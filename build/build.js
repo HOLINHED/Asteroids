@@ -287,7 +287,7 @@ var sketch = function (p) {
     var maxFPS = 0;
     var minFPS = 100;
     p.setup = function () {
-        p.createCanvas(600, 600);
+        p.createCanvas(800, 600);
         game = new Astroids(p);
         game.setup();
     };

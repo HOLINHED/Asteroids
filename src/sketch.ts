@@ -5,7 +5,7 @@ var sketch = (p: p5) => {
     let minFPS: number = 100;
     
     p.setup = () => {
-        p.createCanvas(600, 600);
+        p.createCanvas(800, 600);
         game = new Astroids(p);
         game.setup();
     }
