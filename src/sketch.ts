@@ -11,6 +11,11 @@ var sketch = (p: p5) => {
     p.draw = () => {
         p.background(0);
 
+        p.fill(0,255,255);
+        p.textSize(12);
+        p.noStroke();
+        p.text(`FPS: ${p.frameRate().toFixed(0)}`, p.width - 55, 20);
+
         if (!game.isRunning()) {
             game = new Astroids(p);
         }

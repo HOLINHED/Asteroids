@@ -39,6 +39,9 @@ var Entity = (function () {
     Entity.prototype.getPos = function () {
         return { x: this.x, y: this.y };
     };
+    Entity.prototype.getDims = function () {
+        return { w: this.width, h: this.height };
+    };
     return Entity;
 }());
 var Game = (function () {
@@ -172,21 +175,21 @@ var Bullet = (function (_super) {
     __extends(Bullet, _super);
     function Bullet(x, y, p, c) {
         var _this = this;
-        var BULLET_SIZE = 10;
+        var BULLET_SIZE = 7.5;
         _this = _super.call(this, x, y, BULLET_SIZE, BULLET_SIZE, p, c) || this;
         _this.p = p;
         return _this;
     }
     Bullet.prototype.draw = function () {
-        this.p.noFill();
-        this.p.stroke(255);
+        this.p.fill(255, 0, 0);
+        this.p.noStroke();
         if (this.getPos().x > this.p.width || this.getPos().x < 10) {
             this.context.share().splice(this, 1);
         }
         if (this.getPos().y > this.p.height || this.getPos().y < 10) {
             this.context.share().splice(this, 1);
         }
-        this.p.ellipse(this.getPos().x, this.getPos().y, 5);
+        this.p.ellipse(this.getPos().x, this.getPos().y, this.getDims().w);
     };
     return Bullet;
 }(Entity));
@@ -200,6 +203,7 @@ var Player = (function (_super) {
         _this.angle = 0;
         _this.radius = RADIUS;
         _this.CANNON_SPEED = _this.p.PI / 25;
+        _this.SHOOT_SPEED = 30;
         _this.coolDown = 0;
         return _this;
     }
@@ -219,8 +223,8 @@ var Player = (function (_super) {
     };
     Player.prototype.shoot = function () {
         if (this.coolDown == 0) {
-            var x = (this.p.cos(this.angle) * 25) + this.getPos().x;
-            var y = (this.p.sin(this.angle) * 25) + this.getPos().y;
+            var x = (this.p.cos(this.angle) * this.SHOOT_SPEED) + this.getPos().x;
+            var y = (this.p.sin(this.angle) * this.SHOOT_SPEED) + this.getPos().y;
             var vx = x - this.getPos().x;
             var vy = y - this.getPos().y;
             var bullets = this.context.share();
@@ -270,6 +274,8 @@ var Rock = (function (_super) {
         }
         this.p.endShape(this.p.CLOSE);
     };
+    Rock.prototype.split = function () {
+    };
     return Rock;
 }(Entity));
 var sketch = function (p) {
@@ -281,6 +287,10 @@ var sketch = function (p) {
     };
     p.draw = function () {
         p.background(0);
+        p.fill(0, 255, 255);
+        p.textSize(12);
+        p.noStroke();
+        p.text("FPS: " + p.frameRate().toFixed(0), p.width - 55, 20);
         if (!game.isRunning()) {
             game = new Astroids(p);
         }

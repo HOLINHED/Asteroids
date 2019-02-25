@@ -3,6 +3,7 @@ class Player extends Entity {
    private radius: number;
    private angle: number;
    private CANNON_SPEED: number;
+   private SHOOT_SPEED: number;
    private coolDown: number;
 
    constructor(x: number, y: number, p: p5, c: Game) {
@@ -14,6 +15,7 @@ class Player extends Entity {
       this.angle = 0;
       this.radius = RADIUS;
       this.CANNON_SPEED = this.p.PI / 25;
+      this.SHOOT_SPEED = 30;
       this.coolDown = 0;
    }
 
@@ -43,8 +45,8 @@ class Player extends Entity {
 
       if (this.coolDown == 0) {
 
-         const x: number = (this.p.cos(this.angle) * 25) + this.getPos().x;
-         const y: number = (this.p.sin(this.angle) * 25) + this.getPos().y;
+         const x: number = (this.p.cos(this.angle) * this.SHOOT_SPEED) + this.getPos().x;
+         const y: number = (this.p.sin(this.angle) * this.SHOOT_SPEED) + this.getPos().y;
          const vx: number = x - this.getPos().x;
          const vy: number = y - this.getPos().y;
 

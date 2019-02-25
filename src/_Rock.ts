@@ -21,7 +21,7 @@ class Rock extends Entity {
 
    }
 
-   public draw() : void{
+   public draw() : void {
 
       this.p.noFill();
       this.p.stroke(255);
@@ -42,6 +42,10 @@ class Rock extends Entity {
 
       }
       this.p.endShape(this.p.CLOSE);
+
+   }
+
+   public split() : void {
 
    }
 

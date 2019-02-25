@@ -65,6 +65,10 @@ abstract class Entity {
       return {x: this.x, y: this.y};
    }
 
+   public getDims() : {w: number, h: number} {
+      return {w: this.width, h: this.height};
+   }
+
    abstract draw() : void;
 
 }
