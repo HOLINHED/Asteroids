@@ -16,18 +16,23 @@ class Player extends Entity {
    }
 
    public draw() : void{
-
+   
+      this.p.strokeWeight(2);
       this.p.noFill();
       this.p.stroke(255);
+   
+      this.p.push();
+      
+      this.p.translate(this.getPos().x, this.getPos().y);
+      this.p.rotate(this.angle);
 
-      // Draw body
-      this.p.ellipse(this.getPos().x,this.getPos().y, this.radius);
-
-      // Draw cannon
-      const x: number = (this.radius * this.p.cos(this.angle)) + this.getPos().x;
-      const y: number = (this.radius * this.p.sin(this.angle)) + this.getPos().y;
-
-      this.p.line(this.getPos().x, this.getPos().y, x, y);
+      const size: number = this.radius;
+   
+      this.p.line(-size/2.3, -size/2.3,       -size/2.3, size/2.3);
+      this.p.line(-size/2.3, -size/2.3, size - size/2.3,        0);
+      this.p.line(-size/2.3,  size/2.3, size - size/2.3,        0);
+   
+      this.p.pop();
    }
 
    public shoot() : void {

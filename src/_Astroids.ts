@@ -4,18 +4,16 @@ class Astroids extends Game {
    private rocks: Rock[] = new Array<Rock>();
    private bullets: Bullet[] = new Array<Bullet>();
    private score: number;
-   private io: Input;
 
    constructor(p: p5) {
-      super(p);
+      super(p, 'Asteroids');
    }
 
    public setup() : void {
       
       this.score = 0;
-      this.io = new Input(this.p);
 
-      this.player = new Player(this.p.width/2, this.p.height/2,this.p,this);
+      this.player = new Player(this.p.width/2, this.p.height/2, this.p, this);
 
       const r: number = this.p.random(7,14);
       
@@ -25,7 +23,7 @@ class Astroids extends Game {
          const y = this.p.random(this.p.height);
 
          const size = this.p.random(70,135);
-         const rock: Rock = new Rock(x,y,size,this.p,this);
+         const rock: Rock = new Rock(x, y, size, this.p, this);
 
          this.rocks.push(rock);
       }
@@ -33,6 +31,11 @@ class Astroids extends Game {
    }
 
    public update() : void {
+
+      this.p.noStroke();
+      this.p.fill(255);
+      this.p.textSize(24);
+      this.p.text(`SCORE: ${this.score}`, 10, 30);
 
       this.checkKey();
 

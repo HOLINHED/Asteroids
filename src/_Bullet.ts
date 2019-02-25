@@ -14,13 +14,13 @@ class Bullet extends Entity {
       this.p.stroke(255);
 
       // Out of bounds check x
-      if (this.getPos().x > this.p.width || this.getPos().x < 0) {
-         this.context.share().splice(this);
+      if (this.getPos().x > this.p.width || this.getPos().x < 10) {
+         this.context.share().splice(this, 1);
       }
 
       // Out of bounds check y
-      if (this.getPos().y > this.p.height || this.getPos().y < 0) {
-         this.context.share().splice(this);
+      if (this.getPos().y > this.p.height || this.getPos().y < 10) {
+         this.context.share().splice(this, 1);
       }
       
       this.p.ellipse(this.getPos().x, this.getPos().y, 5);

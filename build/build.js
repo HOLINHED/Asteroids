@@ -42,9 +42,11 @@ var Entity = (function () {
     return Entity;
 }());
 var Game = (function () {
-    function Game(p) {
+    function Game(p, title) {
         this.p = p;
         this.running = true;
+        this.io = new Input(this.p);
+        document.title = title;
         this.p.rectMode('center');
     }
     Game.prototype.setRunning = function (running) {
@@ -97,14 +99,13 @@ var __extends = (this && this.__extends) || (function () {
 var Astroids = (function (_super) {
     __extends(Astroids, _super);
     function Astroids(p) {
-        var _this = _super.call(this, p) || this;
+        var _this = _super.call(this, p, 'Asteroids') || this;
         _this.rocks = new Array();
         _this.bullets = new Array();
         return _this;
     }
     Astroids.prototype.setup = function () {
         this.score = 0;
-        this.io = new Input(this.p);
         this.player = new Player(this.p.width / 2, this.p.height / 2, this.p, this);
         var r = this.p.random(7, 14);
         for (var i = 0; i < r; i++) {
@@ -116,6 +117,10 @@ var Astroids = (function (_super) {
         }
     };
     Astroids.prototype.update = function () {
+        this.p.noStroke();
+        this.p.fill(255);
+        this.p.textSize(24);
+        this.p.text("SCORE: " + this.score, 10, 30);
         this.checkKey();
         this.player.update();
         this.player.draw();
@@ -175,11 +180,11 @@ var Bullet = (function (_super) {
     Bullet.prototype.draw = function () {
         this.p.noFill();
         this.p.stroke(255);
-        if (this.getPos().x > this.p.width || this.getPos().x < 0) {
-            this.context.share().splice(this);
+        if (this.getPos().x > this.p.width || this.getPos().x < 10) {
+            this.context.share().splice(this, 1);
         }
-        if (this.getPos().y > this.p.height || this.getPos().y < 0) {
-            this.context.share().splice(this);
+        if (this.getPos().y > this.p.height || this.getPos().y < 10) {
+            this.context.share().splice(this, 1);
         }
         this.p.ellipse(this.getPos().x, this.getPos().y, 5);
     };
@@ -198,12 +203,17 @@ var Player = (function (_super) {
         return _this;
     }
     Player.prototype.draw = function () {
+        this.p.strokeWeight(2);
         this.p.noFill();
         this.p.stroke(255);
-        this.p.ellipse(this.getPos().x, this.getPos().y, this.radius);
-        var x = (this.radius * this.p.cos(this.angle)) + this.getPos().x;
-        var y = (this.radius * this.p.sin(this.angle)) + this.getPos().y;
-        this.p.line(this.getPos().x, this.getPos().y, x, y);
+        this.p.push();
+        this.p.translate(this.getPos().x, this.getPos().y);
+        this.p.rotate(this.angle);
+        var size = this.radius;
+        this.p.line(-size / 2.3, -size / 2.3, -size / 2.3, size / 2.3);
+        this.p.line(-size / 2.3, -size / 2.3, size - size / 2.3, 0);
+        this.p.line(-size / 2.3, size / 2.3, size - size / 2.3, 0);
+        this.p.pop();
     };
     Player.prototype.shoot = function () {
         var x = (this.p.cos(this.angle) * 25) + this.getPos().x;
@@ -228,18 +238,32 @@ var Rock = (function (_super) {
     __extends(Rock, _super);
     function Rock(x, y, size, p, c) {
         var _this = _super.call(this, x, y, size, size, p, c) || this;
+        _this.radii = new Array();
         _this.p = p;
         _this.size = size;
         var vx = _this.p.random(-7, 7);
         var vy = _this.p.random(-6, 8);
         _this.setVx(vx);
         _this.setVy(vy);
+        for (var i = 0; i < _this.p.random(12, 24); i++) {
+            var r = _this.p.random((_this.size / 2) - 13, (_this.size / 2) + 13);
+            _this.radii.push(r);
+        }
         return _this;
     }
     Rock.prototype.draw = function () {
-        this.p.fill(255);
-        this.p.noStroke();
-        this.p.ellipse(this.getPos().x, this.getPos().y, this.size);
+        this.p.noFill();
+        this.p.stroke(255);
+        var currR = 0;
+        this.p.beginShape();
+        for (var a = 0; a < this.p.TWO_PI; a += this.p.PI / 10) {
+            var r = this.radii[currR];
+            var x = (r * this.p.cos(a)) + this.getPos().x;
+            var y = (r * this.p.sin(a)) + this.getPos().y;
+            this.p.vertex(x, y);
+            currR = currR < this.radii.length ? currR + 1 : 0;
+        }
+        this.p.endShape(this.p.CLOSE);
     };
     return Rock;
 }(Entity));
