@@ -10,7 +10,8 @@ class Rock extends Entity {
       this.p = p;
       this.size = size;
       this.angle = 0;
-      this.angleMod = (this.p.random(this.p.PI / 110, this.p.PI / 135)) * (this.p.random() > 0.5 ? -1 : 1);
+      this.angleMod = (this.p.random(this.p.PI / 110, this.p.PI / 135)) * 
+         (this.p.random() > 0.5 ? -1 : 1);
 
       const vx: number = this.p.random(-7,7);
       const vy: number = this.p.random(-6,8);

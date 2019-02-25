@@ -251,7 +251,8 @@ var Rock = (function (_super) {
         _this.p = p;
         _this.size = size;
         _this.angle = 0;
-        _this.angleMod = (_this.p.random(_this.p.PI / 110, _this.p.PI / 135)) * (_this.p.random() > 0.5 ? -1 : 1);
+        _this.angleMod = (_this.p.random(_this.p.PI / 110, _this.p.PI / 135)) *
+            (_this.p.random() > 0.5 ? -1 : 1);
         var vx = _this.p.random(-7, 7);
         var vy = _this.p.random(-6, 8);
         _this.setVx(vx);
