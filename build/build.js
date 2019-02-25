@@ -251,12 +251,13 @@ var Rock = (function (_super) {
         _this.p = p;
         _this.size = size;
         _this.angle = 0;
+        _this.angleMod = (_this.p.random(_this.p.PI / 110, _this.p.PI / 135)) * (_this.p.random() > 0.5 ? -1 : 1);
         var vx = _this.p.random(-7, 7);
         var vy = _this.p.random(-6, 8);
         _this.setVx(vx);
         _this.setVy(vy);
         for (var i = 0; i < _this.p.random(12, 24); i++) {
-            var r = _this.p.random((_this.size / 2) - 13, (_this.size / 2) + 13);
+            var r = _this.p.random((_this.size / 2) - 8, (_this.size / 2) + 8);
             _this.radii.push(r);
         }
         return _this;
@@ -267,6 +268,7 @@ var Rock = (function (_super) {
         var currR = 0;
         this.p.push();
         this.p.translate(this.getPos().x, this.getPos().y);
+        this.p.rotate(this.angle);
         this.p.beginShape();
         for (var a = 0; a < this.p.TWO_PI; a += this.p.PI / 10) {
             var r = this.radii[currR];
@@ -277,6 +279,7 @@ var Rock = (function (_super) {
         }
         this.p.endShape(this.p.CLOSE);
         this.p.pop();
+        this.angle += this.angleMod;
     };
     Rock.prototype.split = function () {
     };
