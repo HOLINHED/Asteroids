@@ -36,7 +36,7 @@ abstract class Entity {
       }
 
       if (this.x < 0 - this.width / 2) {
-         this.x = width - this.width / 2
+         this.x = width + this.width / 2
       }
 
       if (this.y > height + this.height / 2) {
@@ -44,7 +44,7 @@ abstract class Entity {
       }
 
       if (this.y < 0 - this.height / 2) {
-         this.y = height - this.height / 2
+         this.y = height + this.height / 2
       }
 
    }

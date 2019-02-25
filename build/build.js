@@ -18,13 +18,13 @@ var Entity = (function () {
             this.x = 0 - this.width / 2;
         }
         if (this.x < 0 - this.width / 2) {
-            this.x = width - this.width / 2;
+            this.x = width + this.width / 2;
         }
         if (this.y > height + this.height / 2) {
             this.y = 0 - this.height / 2;
         }
         if (this.y < 0 - this.height / 2) {
-            this.y = height - this.height / 2;
+            this.y = height + this.height / 2;
         }
     };
     Entity.prototype.isColliding = function (entity) {
