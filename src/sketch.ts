@@ -27,7 +27,9 @@ var sketch = (p: p5) => {
         p.text(`MIN FPS: ${minFPS.toFixed(0)}`, p.width - 82, 60);
 
         if (!game.isRunning()) {
+            alert('GAME OVER!');
             game = new Astroids(p);
+            game.setup();
         }
 
         game.update();

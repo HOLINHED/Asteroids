@@ -27,7 +27,7 @@ class Player extends Entity {
    
       this.p.strokeWeight(2);
       this.p.noFill();
-      this.p.stroke(this.mortal ? 255 : 50);
+      this.p.stroke(this.mortal ? 255 : 120);
 
       // Check collision with rocks
       const rocks: Array<Rock> = this.context.share().rocks;

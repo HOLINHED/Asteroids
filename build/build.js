@@ -147,7 +147,6 @@ var Astroids = (function (_super) {
         }
         if (this.lives <= 0) {
             this.setRunning(false);
-            return;
         }
     };
     Astroids.prototype.checkKey = function () {
@@ -230,7 +229,7 @@ var Player = (function (_super) {
         this.coolDown = this.coolDown > 0 ? this.coolDown - 1 : 0;
         this.p.strokeWeight(2);
         this.p.noFill();
-        this.p.stroke(this.mortal ? 255 : 50);
+        this.p.stroke(this.mortal ? 255 : 120);
         var rocks = this.context.share().rocks;
         for (var _i = 0, rocks_1 = rocks; _i < rocks_1.length; _i++) {
             var rock = rocks_1[_i];
@@ -362,7 +361,9 @@ var sketch = function (p) {
         p.text("MAX FPS: " + maxFPS.toFixed(0), p.width - 82, 40);
         p.text("MIN FPS: " + minFPS.toFixed(0), p.width - 82, 60);
         if (!game.isRunning()) {
+            alert('GAME OVER!');
             game = new Astroids(p);
+            game.setup();
         }
         game.update();
     };

@@ -57,7 +57,6 @@ class Astroids extends Game {
 
       if (this.lives <= 0) {
          this.setRunning(false);
-         return;
       }
 
    }
