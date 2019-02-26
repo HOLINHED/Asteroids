@@ -15,7 +15,7 @@ class Astroids extends Game {
 
       this.player = new Player(this.p.width/2, this.p.height/2, this.p, this);
 
-      const r: number = this.p.random(7,14);
+      const r: number = this.p.random(3,7);
       
       for (let i = 0; i < r; i++) {
          
