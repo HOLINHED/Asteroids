@@ -50,7 +50,7 @@ class Player extends Entity {
          const vx: number = x - this.getPos().x;
          const vy: number = y - this.getPos().y;
 
-         const bullets: Bullet[] = this.context.share().bullets;
+         const bullets: Array<Bullet> = this.context.share().bullets;
 
          const bullet: Bullet = new Bullet(x,y,this.p,this.context);
 

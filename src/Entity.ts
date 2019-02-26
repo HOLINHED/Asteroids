@@ -71,6 +71,10 @@ abstract class Entity {
       this.vy = vy;
    }
 
+   public getV() : {vx: number, vy: number} {
+      return { vx: this.vx, vy: this.vy };
+   }
+
    public getPos() : {x: number, y: number} {
       return {x: this.x, y: this.y};
    }

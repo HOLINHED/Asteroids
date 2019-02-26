@@ -19,8 +19,10 @@ class Rock extends Entity {
       this.setVx(vx);
       this.setVy(vy);
 
+      const radMod = this.p.log(this.size) * 1.25;
+
       for (let i: number = 0; i < this.p.random(12,24); i++) {
-         const r: number = this.p.random((this.size / 2) - 8, (this.size / 2) + 8);
+         const r: number = this.p.random((this.size / 2) - radMod, (this.size / 2) + radMod);
          this.radii.push(r);
       }
 
@@ -38,6 +40,7 @@ class Rock extends Entity {
                
          if (this.isColliding(bullet)) {
             bullets.splice(bullets.indexOf(bullet), 1);
+            this.split();
          }
       }
 
@@ -74,6 +77,27 @@ class Rock extends Entity {
    }
 
    public split() : void {
+
+      const rocks: Array<Bullet> = this.context.share().rocks;
+
+      if (this.getDims().w > 50) {
+      
+         const vx: number = this.getV().vx * 0.75;
+         const vy: number = this.getV().vy * 0.75;
+
+         const rock1: Rock = new Rock(this.getPos().x, this.getPos().y, this.getDims().w / 2, this.p, this.context);
+         const rock2: Rock = new Rock(this.getPos().x, this.getPos().y, this.getDims().w / 2, this.p, this.context);
+
+         rock1.setVx(vx);
+         rock2.setVx(-vx);
+         rock1.setVy(vy);
+         rock2.setVy(vy);
+
+         rocks.push(rock1,rock2);
+
+      }
+
+      rocks.splice(rocks.indexOf(this), 1);
 
    }
 

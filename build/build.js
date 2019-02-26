@@ -39,6 +39,9 @@ var Entity = (function () {
     Entity.prototype.setVy = function (vy) {
         this.vy = vy;
     };
+    Entity.prototype.getV = function () {
+        return { vx: this.vx, vy: this.vy };
+    };
     Entity.prototype.getPos = function () {
         return { x: this.x, y: this.y };
     };
@@ -187,10 +190,10 @@ var Bullet = (function (_super) {
         this.p.fill(255, 0, 0);
         this.p.noStroke();
         if (this.getPos().x > this.p.width || this.getPos().x < 10) {
-            this.context.share().splice(this, 1);
+            this.context.share().bullets.splice(this, 1);
         }
         if (this.getPos().y > this.p.height || this.getPos().y < 10) {
-            this.context.share().splice(this, 1);
+            this.context.share().bullets.splice(this, 1);
         }
         this.p.ellipse(this.getPos().x, this.getPos().y, this.getDims().w);
     };
@@ -260,8 +263,9 @@ var Rock = (function (_super) {
         var vy = _this.p.random(-6, 8);
         _this.setVx(vx);
         _this.setVy(vy);
+        var radMod = _this.p.log(_this.size) * 1.25;
         for (var i = 0; i < _this.p.random(12, 24); i++) {
-            var r = _this.p.random((_this.size / 2) - 8, (_this.size / 2) + 8);
+            var r = _this.p.random((_this.size / 2) - radMod, (_this.size / 2) + radMod);
             _this.radii.push(r);
         }
         return _this;
@@ -274,6 +278,7 @@ var Rock = (function (_super) {
             var bullet = bullets_1[_i];
             if (this.isColliding(bullet)) {
                 bullets.splice(bullets.indexOf(bullet), 1);
+                this.split();
             }
         }
         var currR = 0;
@@ -293,6 +298,19 @@ var Rock = (function (_super) {
         this.angle += this.angleMod;
     };
     Rock.prototype.split = function () {
+        var rocks = this.context.share().rocks;
+        if (this.getDims().w > 50) {
+            var vx = this.getV().vx * 0.75;
+            var vy = this.getV().vy * 0.75;
+            var rock1 = new Rock(this.getPos().x, this.getPos().y, this.getDims().w / 2, this.p, this.context);
+            var rock2 = new Rock(this.getPos().x, this.getPos().y, this.getDims().w / 2, this.p, this.context);
+            rock1.setVx(vx);
+            rock2.setVx(-vx);
+            rock1.setVy(vy);
+            rock2.setVy(vy);
+            rocks.push(rock1, rock2);
+        }
+        rocks.splice(rocks.indexOf(this), 1);
     };
     return Rock;
 }(Entity));
