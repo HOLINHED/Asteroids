@@ -173,7 +173,10 @@ var Astroids = (function (_super) {
         }
     };
     Astroids.prototype.share = function () {
-        return { bullets: this.bullets, rocks: this.rocks };
+        return { bullets: this.bullets, rocks: this.rocks, score: this.score };
+    };
+    Astroids.prototype.setScore = function (score) {
+        this.score = score;
     };
     return Astroids;
 }(Game));
@@ -311,6 +314,8 @@ var Rock = (function (_super) {
             rocks.push(rock1, rock2);
         }
         rocks.splice(rocks.indexOf(this), 1);
+        var score = this.context.share().score;
+        this.context.setScore(score + 100);
     };
     return Rock;
 }(Entity));

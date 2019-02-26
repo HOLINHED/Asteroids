@@ -67,8 +67,12 @@ class Astroids extends Game {
       }
    }
 
-   public share() : {bullets: Array<Bullet>, rocks: Array<Rock>} {
-      return {bullets: this.bullets, rocks: this.rocks};
+   public share() : {bullets: Array<Bullet>, rocks: Array<Rock>, score: number} {
+      return {bullets: this.bullets, rocks: this.rocks, score: this.score};
+   }
+
+   public setScore(score: number) : void {
+      this.score = score;
    }
 
 }

@@ -99,6 +99,9 @@ class Rock extends Entity {
 
       rocks.splice(rocks.indexOf(this), 1);
 
+      const score: number = this.context.share().score;
+      this.context.setScore(score + 100);
+
    }
 
 }

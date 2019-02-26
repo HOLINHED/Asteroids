@@ -20,6 +20,8 @@ abstract class Game {
 
    protected abstract checkKey() : void;
 
+   abstract setScore(score: number) : void;
+
    abstract share() : any;
 
    public setRunning(running: boolean) : void {
