@@ -284,6 +284,14 @@ var Rock = (function (_super) {
         this.p.endShape(this.p.CLOSE);
         this.p.pop();
         this.angle += this.angleMod;
+        var bullets = this.context.share();
+        for (var _i = 0, bullets_1 = bullets; _i < bullets_1.length; _i++) {
+            var bullet = bullets_1[_i];
+            if (this.isColliding(bullet)) {
+                bullets.splice(bullets.indexOf(bullet), 1);
+                this.getPos().x = 10000000;
+            }
+        }
     };
     Rock.prototype.split = function () {
     };

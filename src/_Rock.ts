@@ -33,6 +33,7 @@ class Rock extends Entity {
 
       let currR: number = 0;
 
+      // DRAW ROCK
       this.p.push();
 
       this.p.translate(this.getPos().x, this.getPos().y);
@@ -56,6 +57,18 @@ class Rock extends Entity {
       this.p.pop();
 
       this.angle += this.angleMod;
+
+      // Check collision with bullets
+      const bullets: Bullet[] = this.context.share();
+
+      for (let bullet of bullets) {
+         
+         if (this.isColliding(bullet)) {
+            bullets.splice(bullets.indexOf(bullet), 1);
+            this.getPos().x = 10000000;
+         }
+
+      }
 
    }
 
