@@ -30,7 +30,7 @@ var Entity = (function () {
     Entity.prototype.isColliding = function (entity) {
         var dist = Math.sqrt(Math.pow(entity.getPos().x - this.x, 2) +
             Math.pow(entity.getPos().y - this.y, 2));
-        var radii = this.width + entity.getDims().w;
+        var radii = (this.width + entity.getDims().w) / 2;
         return dist < radii;
     };
     Entity.prototype.setVx = function (vx) {
@@ -258,8 +258,8 @@ var Rock = (function (_super) {
             (_this.p.random() > 0.5 ? -1 : 1);
         var vx = _this.p.random(-7, 7);
         var vy = _this.p.random(-6, 8);
-        _this.setVx(vx);
-        _this.setVy(vy);
+        _this.setVx(vx * 0);
+        _this.setVy(vy * 0);
         for (var i = 0; i < _this.p.random(12, 24); i++) {
             var r = _this.p.random((_this.size / 2) - 8, (_this.size / 2) + 8);
             _this.radii.push(r);
@@ -269,6 +269,13 @@ var Rock = (function (_super) {
     Rock.prototype.draw = function () {
         this.p.noFill();
         this.p.stroke(255);
+        var bullets = this.context.share();
+        for (var _i = 0, bullets_1 = bullets; _i < bullets_1.length; _i++) {
+            var bullet = bullets_1[_i];
+            if (this.isColliding(bullet)) {
+                bullets.splice(bullets.indexOf(bullet), 1);
+            }
+        }
         var currR = 0;
         this.p.push();
         this.p.translate(this.getPos().x, this.getPos().y);
@@ -284,14 +291,6 @@ var Rock = (function (_super) {
         this.p.endShape(this.p.CLOSE);
         this.p.pop();
         this.angle += this.angleMod;
-        var bullets = this.context.share();
-        for (var _i = 0, bullets_1 = bullets; _i < bullets_1.length; _i++) {
-            var bullet = bullets_1[_i];
-            if (this.isColliding(bullet)) {
-                bullets.splice(bullets.indexOf(bullet), 1);
-                this.getPos().x = 10000000;
-            }
-        }
     };
     Rock.prototype.split = function () {
     };

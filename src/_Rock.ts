@@ -16,8 +16,8 @@ class Rock extends Entity {
       const vx: number = this.p.random(-7,7);
       const vy: number = this.p.random(-6,8);
 
-      this.setVx(vx);
-      this.setVy(vy);
+      this.setVx(vx * 0);
+      this.setVy(vy * 0);
 
       for (let i: number = 0; i < this.p.random(12,24); i++) {
          const r: number = this.p.random((this.size / 2) - 8, (this.size / 2) + 8);
@@ -31,7 +31,20 @@ class Rock extends Entity {
       this.p.noFill();
       this.p.stroke(255);
 
+      // Check collision with bullets
+      const bullets: Bullet[] = this.context.share();
+
+      for (let bullet of bullets) {
+               
+         if (this.isColliding(bullet)) {
+            bullets.splice(bullets.indexOf(bullet), 1);
+         }
+      }
+
       let currR: number = 0;
+
+      // HITBOX FOR COLLISION TESTING
+      //this.p.ellipse(this.getPos().x,this.getPos().y,this.size);
 
       // DRAW ROCK
       this.p.push();
@@ -57,18 +70,6 @@ class Rock extends Entity {
       this.p.pop();
 
       this.angle += this.angleMod;
-
-      // Check collision with bullets
-      const bullets: Bullet[] = this.context.share();
-
-      for (let bullet of bullets) {
-         
-         if (this.isColliding(bullet)) {
-            bullets.splice(bullets.indexOf(bullet), 1);
-            this.getPos().x = 10000000;
-         }
-
-      }
 
    }
 

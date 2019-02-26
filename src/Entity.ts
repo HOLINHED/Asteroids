@@ -56,7 +56,7 @@ abstract class Entity {
          Math.pow(entity.getPos().y - this.y,2));
       
       // Sum of radii of both circles
-      const radii: number = this.width + entity.getDims().w;
+      const radii: number = (this.width + entity.getDims().w) / 2;
 
       // If distance between two points is less than the sum of the 
       // radii, the two circles are intersecting.
