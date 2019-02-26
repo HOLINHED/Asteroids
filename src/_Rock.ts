@@ -32,7 +32,7 @@ class Rock extends Entity {
       this.p.stroke(255);
 
       // Check collision with bullets
-      const bullets: Bullet[] = this.context.share();
+      const bullets: Bullet[] = this.context.share().bullets;
 
       for (let bullet of bullets) {
                

@@ -170,7 +170,7 @@ var Astroids = (function (_super) {
         }
     };
     Astroids.prototype.share = function () {
-        return this.bullets;
+        return { bullets: this.bullets, rocks: this.rocks };
     };
     return Astroids;
 }(Game));
@@ -230,7 +230,7 @@ var Player = (function (_super) {
             var y = (this.p.sin(this.angle) * this.SHOOT_SPEED) + this.getPos().y;
             var vx = x - this.getPos().x;
             var vy = y - this.getPos().y;
-            var bullets = this.context.share();
+            var bullets = this.context.share().bullets;
             var bullet = new Bullet(x, y, this.p, this.context);
             bullet.setVx(vx);
             bullet.setVy(vy);
@@ -269,7 +269,7 @@ var Rock = (function (_super) {
     Rock.prototype.draw = function () {
         this.p.noFill();
         this.p.stroke(255);
-        var bullets = this.context.share();
+        var bullets = this.context.share().bullets;
         for (var _i = 0, bullets_1 = bullets; _i < bullets_1.length; _i++) {
             var bullet = bullets_1[_i];
             if (this.isColliding(bullet)) {

@@ -67,8 +67,8 @@ class Astroids extends Game {
       }
    }
 
-   public share() : Bullet[] {
-      return this.bullets;
+   public share() : {bullets: Bullet[], rocks: Rock[]} {
+      return {bullets: this.bullets, rocks: this.rocks};
    }
 
 }
