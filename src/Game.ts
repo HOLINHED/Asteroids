@@ -22,6 +22,8 @@ abstract class Game {
 
    abstract setScore(score: number) : void;
 
+   abstract setLives(lives: number) : void;
+
    abstract share() : any;
 
    public setRunning(running: boolean) : void {

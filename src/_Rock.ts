@@ -41,13 +41,11 @@ class Rock extends Entity {
          if (this.isColliding(bullet)) {
             bullets.splice(bullets.indexOf(bullet), 1);
             this.split();
+            break;
          }
       }
 
       let currR: number = 0;
-
-      // HITBOX FOR COLLISION TESTING
-      //this.p.ellipse(this.getPos().x,this.getPos().y,this.size);
 
       // DRAW ROCK
       this.p.push();

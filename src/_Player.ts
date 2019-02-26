@@ -5,6 +5,7 @@ class Player extends Entity {
    private CANNON_SPEED: number;
    private SHOOT_SPEED: number;
    private coolDown: number;
+   private mortal: boolean;
 
    constructor(x: number, y: number, p: p5, c: Game) {
 
@@ -17,6 +18,7 @@ class Player extends Entity {
       this.CANNON_SPEED = this.p.PI / 25;
       this.SHOOT_SPEED = 30;
       this.coolDown = 0;
+      this.mortal = false;
    }
 
    public draw() : void{
@@ -25,7 +27,20 @@ class Player extends Entity {
    
       this.p.strokeWeight(2);
       this.p.noFill();
-      this.p.stroke(255);
+      this.p.stroke(this.mortal ? 255 : 50);
+
+      // Check collision with rocks
+      const rocks: Array<Rock> = this.context.share().rocks;
+      
+      for (let rock of rocks) {
+
+         if (this.mortal && this.isColliding(rock)) {
+            const lives: number = this.context.share().lives;
+            this.context.setLives(lives - 1);
+            this.mortal = false;
+         }
+
+      }
    
       this.p.push();
       
@@ -42,6 +57,8 @@ class Player extends Entity {
    }
 
    public shoot() : void {
+
+      this.mortal = true;
 
       if (this.coolDown == 0) {
 

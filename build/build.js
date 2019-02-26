@@ -115,6 +115,7 @@ var Astroids = (function (_super) {
     }
     Astroids.prototype.setup = function () {
         this.score = 0;
+        this.lives = 3;
         this.player = new Player(this.p.width / 2, this.p.height / 2, this.p, this);
         var r = this.p.random(3, 7);
         for (var i = 0; i < r; i++) {
@@ -130,6 +131,7 @@ var Astroids = (function (_super) {
         this.p.fill(255);
         this.p.textSize(24);
         this.p.text("SCORE: " + this.score, 10, 30);
+        this.p.text("LIVES: " + this.lives, 10, 60);
         this.checkKey();
         this.player.update();
         this.player.draw();
@@ -142,6 +144,10 @@ var Astroids = (function (_super) {
             var rock = _c[_b];
             rock.update();
             rock.draw();
+        }
+        if (this.lives <= 0) {
+            this.setRunning(false);
+            return;
         }
     };
     Astroids.prototype.checkKey = function () {
@@ -173,10 +179,13 @@ var Astroids = (function (_super) {
         }
     };
     Astroids.prototype.share = function () {
-        return { bullets: this.bullets, rocks: this.rocks, score: this.score };
+        return { bullets: this.bullets, rocks: this.rocks, score: this.score, lives: this.lives };
     };
     Astroids.prototype.setScore = function (score) {
         this.score = score;
+    };
+    Astroids.prototype.setLives = function (lives) {
+        this.lives = lives;
     };
     return Astroids;
 }(Game));
@@ -214,13 +223,23 @@ var Player = (function (_super) {
         _this.CANNON_SPEED = _this.p.PI / 25;
         _this.SHOOT_SPEED = 30;
         _this.coolDown = 0;
+        _this.mortal = false;
         return _this;
     }
     Player.prototype.draw = function () {
         this.coolDown = this.coolDown > 0 ? this.coolDown - 1 : 0;
         this.p.strokeWeight(2);
         this.p.noFill();
-        this.p.stroke(255);
+        this.p.stroke(this.mortal ? 255 : 50);
+        var rocks = this.context.share().rocks;
+        for (var _i = 0, rocks_1 = rocks; _i < rocks_1.length; _i++) {
+            var rock = rocks_1[_i];
+            if (this.mortal && this.isColliding(rock)) {
+                var lives = this.context.share().lives;
+                this.context.setLives(lives - 1);
+                this.mortal = false;
+            }
+        }
         this.p.push();
         this.p.translate(this.getPos().x, this.getPos().y);
         this.p.rotate(this.angle);
@@ -231,6 +250,7 @@ var Player = (function (_super) {
         this.p.pop();
     };
     Player.prototype.shoot = function () {
+        this.mortal = true;
         if (this.coolDown == 0) {
             var x = (this.p.cos(this.angle) * this.SHOOT_SPEED) + this.getPos().x;
             var y = (this.p.sin(this.angle) * this.SHOOT_SPEED) + this.getPos().y;
@@ -282,6 +302,7 @@ var Rock = (function (_super) {
             if (this.isColliding(bullet)) {
                 bullets.splice(bullets.indexOf(bullet), 1);
                 this.split();
+                break;
             }
         }
         var currR = 0;
