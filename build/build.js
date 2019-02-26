@@ -28,7 +28,10 @@ var Entity = (function () {
         }
     };
     Entity.prototype.isColliding = function (entity) {
-        return false;
+        var dist = Math.sqrt(Math.pow(entity.getPos().x - this.x, 2) +
+            Math.pow(entity.getPos().y - this.y, 2));
+        var radii = this.width + entity.getDims().w;
+        return dist < radii;
     };
     Entity.prototype.setVx = function (vx) {
         this.vx = vx;

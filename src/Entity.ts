@@ -50,7 +50,17 @@ abstract class Entity {
    }
 
    public isColliding(entity: Entity) : boolean {
-      return false;
+
+      // Calculate distance between two circles
+      const dist: number = Math.sqrt(Math.pow(entity.getPos().x - this.x,2) +
+         Math.pow(entity.getPos().y - this.y,2));
+      
+      // Sum of radii of both circles
+      const radii: number = this.width + entity.getDims().w;
+
+      // If distance between two points is less than the sum of the 
+      // radii, the two circles are intersecting.
+      return dist < radii;
    }
 
    public setVx(vx: number) : void {
