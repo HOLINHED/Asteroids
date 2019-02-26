@@ -16,8 +16,8 @@ class Rock extends Entity {
       const vx: number = this.p.random(-7,7);
       const vy: number = this.p.random(-6,8);
 
-      this.setVx(vx * 0);
-      this.setVy(vy * 0);
+      this.setVx(vx);
+      this.setVy(vy);
 
       for (let i: number = 0; i < this.p.random(12,24); i++) {
          const r: number = this.p.random((this.size / 2) - 8, (this.size / 2) + 8);

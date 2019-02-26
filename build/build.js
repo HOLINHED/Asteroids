@@ -258,8 +258,8 @@ var Rock = (function (_super) {
             (_this.p.random() > 0.5 ? -1 : 1);
         var vx = _this.p.random(-7, 7);
         var vy = _this.p.random(-6, 8);
-        _this.setVx(vx * 0);
-        _this.setVy(vy * 0);
+        _this.setVx(vx);
+        _this.setVy(vy);
         for (var i = 0; i < _this.p.random(12, 24); i++) {
             var r = _this.p.random((_this.size / 2) - 8, (_this.size / 2) + 8);
             _this.radii.push(r);
