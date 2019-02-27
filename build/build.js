@@ -152,7 +152,6 @@ var Astroids = (function (_super) {
         this.player.update();
         this.player.draw();
         if (this.rocks.length <= 2 || this.p.random() > 0.99 && this.p.random() > 0.87 && this.rocks.length < 9) {
-            console.log('made new rock');
             var x = this.p.random(this.p.width);
             var y = this.p.random(this.p.height);
             var size = this.p.random(70, 135);
@@ -291,9 +290,6 @@ var Player = (function (_super) {
     };
     Player.prototype.increment = function (mult) {
         this.angle += this.CANNON_SPEED * mult;
-    };
-    Player.prototype.getAngle = function () {
-        return this.angle;
     };
     Player.prototype.accelerate = function () {
         this.acceleration = 0.1;
