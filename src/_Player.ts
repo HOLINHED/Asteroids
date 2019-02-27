@@ -25,32 +25,22 @@ class Player extends Entity {
 
    public draw() : void {
 
-      console.log(`
-      x: ${this.getPos().x}
-      y: ${this.getPos().y}
-      vx: ${this.getV().vx}
-      vy: ${this.getV().vy}
-      a: ${this.acceleration}
-      ax: ${this.acceleration * this.p.cos(this.angle)}
-      ay: ${this.acceleration * this.p.sin(this.angle)}
-      `);
-
       if (this.acceleration <= 0) {
 				
          if (this.getV().vx > 0) {
-            this.setVx(this.getV().vx - 0.05);
+            this.setVx(this.getV().vx - 0.0512345);
         }
          
          if (this.getV().vy > 0) {
-            this.setVy(this.getV().vy - 0.05);
+            this.setVy(this.getV().vy - 0.0512345);
          }
          
          if (this.getV().vx < 0) {
-            this.setVx(this.getV().vx + 0.05);
+            this.setVx(this.getV().vx + 0.0512345);
         }
          
          if (this.getV().vy < 0) {
-            this.setVy(this.getV().vy + 0.05);
+            this.setVy(this.getV().vy + 0.0512345);
          }
          
       }
@@ -80,6 +70,7 @@ class Player extends Entity {
          if (this.mortal && this.isColliding(rock)) {
             const lives: number = this.context.share().lives;
             this.context.setLives(lives - 1);
+            this.coolDown = 20;
             this.mortal = false;
          }
 

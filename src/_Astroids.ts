@@ -46,9 +46,6 @@ class Astroids extends Game {
 
       this.checkKey();
 
-      this.player.update();
-      this.player.draw();
-
       for (let bullet of this.bullets) {
          bullet.update();
          bullet.draw();
@@ -63,11 +60,32 @@ class Astroids extends Game {
          this.setRunning(false);
       }
 
+      this.player.update();
+      this.player.draw();
+
+      if (this.rocks.length <= 2 || this.p.random() > 0.99 && this.p.random() > 0.87 && this.rocks.length < 9) {
+
+         console.log('made new rock');
+
+         const x = this.p.random(this.p.width);
+         const y = this.p.random(this.p.height);
+         const size = this.p.random(70,135);
+         const rock: Rock = new Rock(x, y, size, this.p, this);
+
+         const vx: number = this.p.random(-3,4);
+         const vy: number = this.p.random(-4,3);
+   
+         rock.setVx(vx);
+         rock.setVy(vy);
+         
+         this.rocks.push(rock);
+      }
+
    }
 
    protected checkKey() : void {
       switch(this.io.getKey()) {
-         case 38: this.player.accelerate();break;   // GO Forward
+         case 38: this.player.accelerate();break;   // Accelerate forward
          case 37: this.player.increment(-1);break;  // Decrease angle of cannon
          case 39: this.player.increment(1);break;   // Increase angle of cannon
          case 32: this.player.shoot();break;        // Create new bullet and add to array

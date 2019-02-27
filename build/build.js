@@ -136,8 +136,6 @@ var Astroids = (function (_super) {
         this.p.text("SCORE: " + this.score, 10, 30);
         this.p.text("LIVES: " + this.lives, 10, 60);
         this.checkKey();
-        this.player.update();
-        this.player.draw();
         for (var _i = 0, _a = this.bullets; _i < _a.length; _i++) {
             var bullet = _a[_i];
             bullet.update();
@@ -150,6 +148,20 @@ var Astroids = (function (_super) {
         }
         if (this.lives <= 0) {
             this.setRunning(false);
+        }
+        this.player.update();
+        this.player.draw();
+        if (this.rocks.length <= 2 || this.p.random() > 0.99 && this.p.random() > 0.87 && this.rocks.length < 9) {
+            console.log('made new rock');
+            var x = this.p.random(this.p.width);
+            var y = this.p.random(this.p.height);
+            var size = this.p.random(70, 135);
+            var rock = new Rock(x, y, size, this.p, this);
+            var vx = this.p.random(-3, 4);
+            var vy = this.p.random(-4, 3);
+            rock.setVx(vx);
+            rock.setVy(vy);
+            this.rocks.push(rock);
         }
     };
     Astroids.prototype.checkKey = function () {
@@ -216,19 +228,18 @@ var Player = (function (_super) {
         return _this;
     }
     Player.prototype.draw = function () {
-        console.log("\n      x: " + this.getPos().x + "\n      y: " + this.getPos().y + "\n      vx: " + this.getV().vx + "\n      vy: " + this.getV().vy + "\n      a: " + this.acceleration + "\n      ax: " + this.acceleration * this.p.cos(this.angle) + "\n      ay: " + this.acceleration * this.p.sin(this.angle) + "\n      ");
         if (this.acceleration <= 0) {
             if (this.getV().vx > 0) {
-                this.setVx(this.getV().vx - 0.05);
+                this.setVx(this.getV().vx - 0.0512345);
             }
             if (this.getV().vy > 0) {
-                this.setVy(this.getV().vy - 0.05);
+                this.setVy(this.getV().vy - 0.0512345);
             }
             if (this.getV().vx < 0) {
-                this.setVx(this.getV().vx + 0.05);
+                this.setVx(this.getV().vx + 0.0512345);
             }
             if (this.getV().vy < 0) {
-                this.setVy(this.getV().vy + 0.05);
+                this.setVy(this.getV().vy + 0.0512345);
             }
         }
         var ax = this.acceleration * this.p.cos(this.angle);
@@ -250,6 +261,7 @@ var Player = (function (_super) {
             if (this.mortal && this.isColliding(rock)) {
                 var lives = this.context.share().lives;
                 this.context.setLives(lives - 1);
+                this.coolDown = 20;
                 this.mortal = false;
             }
         }
