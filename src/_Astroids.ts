@@ -27,6 +27,12 @@ class Astroids extends Game {
          const size = this.p.random(70,135);
          const rock: Rock = new Rock(x, y, size, this.p, this);
 
+         const vx: number = this.p.random(-4,4);
+         const vy: number = this.p.random(-5,5);
+   
+         rock.setVx(vx);
+         rock.setVy(vy);
+
          this.rocks.push(rock);
       }
 
