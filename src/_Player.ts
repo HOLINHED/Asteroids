@@ -12,16 +12,16 @@ class Player extends Entity {
       const RADIUS = 35;
 
       super(x,y,RADIUS, RADIUS, p,c);
-      this.p = p;
-      this.angle = 0;
+
       this.radius = RADIUS;
+      this.angle = 0;
       this.CANNON_SPEED = this.p.PI / 25;
       this.SHOOT_SPEED = 30;
       this.coolDown = 0;
       this.mortal = false;
    }
 
-   public draw() : void{
+   public draw() : void {
 
       this.coolDown = this.coolDown > 0 ? this.coolDown - 1 : 0;
    

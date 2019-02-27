@@ -2,12 +2,12 @@ var Entity = (function () {
     function Entity(x, y, width, height, p, c) {
         this.x = x;
         this.y = y;
+        this.vx = 0;
+        this.vy = 0;
         this.width = width;
         this.height = height;
         this.p = p;
         this.context = c;
-        this.vx = 0;
-        this.vy = 0;
     }
     Entity.prototype.update = function () {
         this.x += this.vx;
@@ -53,8 +53,8 @@ var Entity = (function () {
 var Game = (function () {
     function Game(p, title) {
         this.p = p;
-        this.running = true;
         this.io = new Input(this.p);
+        this.running = true;
         document.title = title;
         this.p.rectMode('center');
     }
@@ -117,12 +117,15 @@ var Astroids = (function (_super) {
         this.score = 0;
         this.lives = 3;
         this.player = new Player(this.p.width / 2, this.p.height / 2, this.p, this);
-        var r = this.p.random(3, 7);
-        for (var i = 0; i < r; i++) {
+        for (var i = 0; i < 4; i++) {
             var x = this.p.random(this.p.width);
             var y = this.p.random(this.p.height);
             var size = this.p.random(70, 135);
             var rock = new Rock(x, y, size, this.p, this);
+            var vx = this.p.random(-3, 4);
+            var vy = this.p.random(-4, 3);
+            rock.setVx(vx);
+            rock.setVy(vy);
             this.rocks.push(rock);
         }
     };
@@ -194,7 +197,6 @@ var Bullet = (function (_super) {
         var _this = this;
         var BULLET_SIZE = 7.5;
         _this = _super.call(this, x, y, BULLET_SIZE, BULLET_SIZE, p, c) || this;
-        _this.p = p;
         return _this;
     }
     Bullet.prototype.draw = function () {
@@ -216,9 +218,8 @@ var Player = (function (_super) {
         var _this = this;
         var RADIUS = 35;
         _this = _super.call(this, x, y, RADIUS, RADIUS, p, c) || this;
-        _this.p = p;
-        _this.angle = 0;
         _this.radius = RADIUS;
+        _this.angle = 0;
         _this.CANNON_SPEED = _this.p.PI / 25;
         _this.SHOOT_SPEED = 30;
         _this.coolDown = 0;
@@ -276,18 +277,13 @@ var Rock = (function (_super) {
     function Rock(x, y, size, p, c) {
         var _this = _super.call(this, x, y, size, size, p, c) || this;
         _this.radii = new Array();
-        _this.p = p;
-        _this.size = size;
         _this.angle = 0;
         _this.angleMod = (_this.p.random(_this.p.PI / 250, _this.p.PI / 295)) *
             (_this.p.random() > 0.5 ? -1 : 1);
-        var vx = _this.p.random(-7, 7);
-        var vy = _this.p.random(-6, 8);
-        _this.setVx(vx);
-        _this.setVy(vy);
-        var radMod = _this.p.log(_this.size) * 1.25;
-        for (var i = 0; i < _this.p.random(12, 24); i++) {
-            var r = _this.p.random((_this.size / 2) - radMod, (_this.size / 2) + radMod);
+        var radMod = _this.p.log(_this.getDims().w) * 1.55;
+        for (var i = 0; i < 20; i++) {
+            var r = _this.p.random((_this.getDims().w / 2) -
+                radMod, (_this.getDims().w / 2) + radMod);
             _this.radii.push(r);
         }
         return _this;

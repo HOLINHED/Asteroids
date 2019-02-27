@@ -16,10 +16,8 @@ class Astroids extends Game {
       this.lives = 3;
 
       this.player = new Player(this.p.width/2, this.p.height/2, this.p, this);
-
-      const r: number = this.p.random(3,7);
       
-      for (let i = 0; i < r; i++) {
+      for (let i = 0; i < 4; i++) {
          
          const x = this.p.random(this.p.width);
          const y = this.p.random(this.p.height);
@@ -27,8 +25,8 @@ class Astroids extends Game {
          const size = this.p.random(70,135);
          const rock: Rock = new Rock(x, y, size, this.p, this);
 
-         const vx: number = this.p.random(-4,4);
-         const vy: number = this.p.random(-5,5);
+         const vx: number = this.p.random(-3,4);
+         const vy: number = this.p.random(-4,3);
    
          rock.setVx(vx);
          rock.setVy(vy);
