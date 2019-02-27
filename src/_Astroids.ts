@@ -67,14 +67,10 @@ class Astroids extends Game {
 
    protected checkKey() : void {
       switch(this.io.getKey()) {
-         case 65: this.player.setVx(-5);break;               // GO LEFT
-         case 87: this.player.setVy(-5);break;               // GO UP
-         case 68: this.player.setVx(5);break;                // GO RIGHT
-         case 83: this.player.setVy(5);break;                // GO DOWN
-         case 37: this.player.increment(-1);break;           // Decrease angle of cannon
-         case 39: this.player.increment(1);break;            // Increase angle of cannon
-         case 32: this.player.shoot();break;                 // Create new bullet and add to array
-         default: this.player.setVx(0);this.player.setVy(0); // Reset player velocity if no key or different key
+         case 38: this.player.accelerate();break;   // GO Forward
+         case 37: this.player.increment(-1);break;  // Decrease angle of cannon
+         case 39: this.player.increment(1);break;   // Increase angle of cannon
+         case 32: this.player.shoot();break;        // Create new bullet and add to array
       }
    }
 

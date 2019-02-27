@@ -6,6 +6,7 @@ class Player extends Entity {
    private SHOOT_SPEED: number;
    private coolDown: number;
    private mortal: boolean;
+   private acceleration: number;
 
    constructor(x: number, y: number, p: p5, c: Game) {
 
@@ -14,14 +15,56 @@ class Player extends Entity {
       super(x,y,RADIUS, RADIUS, p,c);
 
       this.radius = RADIUS;
-      this.angle = 0;
-      this.CANNON_SPEED = this.p.PI / 25;
+      this.angle = -this.p.PI / 2;
+      this.CANNON_SPEED = this.p.PI / 30;
       this.SHOOT_SPEED = 30;
       this.coolDown = 0;
       this.mortal = false;
+      this.acceleration = 0;
    }
 
    public draw() : void {
+
+      console.log(`
+      x: ${this.getPos().x}
+      y: ${this.getPos().y}
+      vx: ${this.getV().vx}
+      vy: ${this.getV().vy}
+      a: ${this.acceleration}
+      ax: ${this.acceleration * this.p.cos(this.angle)}
+      ay: ${this.acceleration * this.p.sin(this.angle)}
+      `);
+
+      if (this.acceleration <= 0) {
+				
+         if (this.getV().vx > 0) {
+            this.setVx(this.getV().vx - 0.05);
+        }
+         
+         if (this.getV().vy > 0) {
+            this.setVy(this.getV().vy - 0.05);
+         }
+         
+         if (this.getV().vx < 0) {
+            this.setVx(this.getV().vx + 0.05);
+        }
+         
+         if (this.getV().vy < 0) {
+            this.setVy(this.getV().vy + 0.05);
+         }
+         
+      }
+
+      const ax: number = this.acceleration * this.p.cos(this.angle);
+      const ay: number = this.acceleration * this.p.sin(this.angle);
+
+      const vx: number = this.getV().vx + ax;
+      const vy: number = this.getV().vy + ay;
+
+      if (this.p.abs(vx) <= 8) this.setVx(vx);
+      if (this.p.abs(vy) <= 8) this.setVy(vy);
+
+      this.acceleration = this.acceleration > 0 ? this.acceleration - 0.015 : 0;
 
       this.coolDown = this.coolDown > 0 ? this.coolDown - 1 : 0;
    
@@ -88,6 +131,10 @@ class Player extends Entity {
 
    public getAngle() : number {
       return this.angle;
+   }
+
+   public accelerate() : void {
+      this.acceleration = 0.1;
    }
 
 }

@@ -154,17 +154,8 @@ var Astroids = (function (_super) {
     };
     Astroids.prototype.checkKey = function () {
         switch (this.io.getKey()) {
-            case 65:
-                this.player.setVx(-5);
-                break;
-            case 87:
-                this.player.setVy(-5);
-                break;
-            case 68:
-                this.player.setVx(5);
-                break;
-            case 83:
-                this.player.setVy(5);
+            case 38:
+                this.player.accelerate();
                 break;
             case 37:
                 this.player.increment(-1);
@@ -175,9 +166,6 @@ var Astroids = (function (_super) {
             case 32:
                 this.player.shoot();
                 break;
-            default:
-                this.player.setVx(0);
-                this.player.setVy(0);
         }
     };
     Astroids.prototype.share = function () {
@@ -219,14 +207,39 @@ var Player = (function (_super) {
         var RADIUS = 35;
         _this = _super.call(this, x, y, RADIUS, RADIUS, p, c) || this;
         _this.radius = RADIUS;
-        _this.angle = 0;
-        _this.CANNON_SPEED = _this.p.PI / 25;
+        _this.angle = -_this.p.PI / 2;
+        _this.CANNON_SPEED = _this.p.PI / 30;
         _this.SHOOT_SPEED = 30;
         _this.coolDown = 0;
         _this.mortal = false;
+        _this.acceleration = 0;
         return _this;
     }
     Player.prototype.draw = function () {
+        console.log("\n      x: " + this.getPos().x + "\n      y: " + this.getPos().y + "\n      vx: " + this.getV().vx + "\n      vy: " + this.getV().vy + "\n      a: " + this.acceleration + "\n      ax: " + this.acceleration * this.p.cos(this.angle) + "\n      ay: " + this.acceleration * this.p.sin(this.angle) + "\n      ");
+        if (this.acceleration <= 0) {
+            if (this.getV().vx > 0) {
+                this.setVx(this.getV().vx - 0.05);
+            }
+            if (this.getV().vy > 0) {
+                this.setVy(this.getV().vy - 0.05);
+            }
+            if (this.getV().vx < 0) {
+                this.setVx(this.getV().vx + 0.05);
+            }
+            if (this.getV().vy < 0) {
+                this.setVy(this.getV().vy + 0.05);
+            }
+        }
+        var ax = this.acceleration * this.p.cos(this.angle);
+        var ay = this.acceleration * this.p.sin(this.angle);
+        var vx = this.getV().vx + ax;
+        var vy = this.getV().vy + ay;
+        if (this.p.abs(vx) <= 8)
+            this.setVx(vx);
+        if (this.p.abs(vy) <= 8)
+            this.setVy(vy);
+        this.acceleration = this.acceleration > 0 ? this.acceleration - 0.015 : 0;
         this.coolDown = this.coolDown > 0 ? this.coolDown - 1 : 0;
         this.p.strokeWeight(2);
         this.p.noFill();
@@ -269,6 +282,9 @@ var Player = (function (_super) {
     };
     Player.prototype.getAngle = function () {
         return this.angle;
+    };
+    Player.prototype.accelerate = function () {
+        this.acceleration = 0.1;
     };
     return Player;
 }(Entity));
