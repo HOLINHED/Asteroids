@@ -104,14 +104,20 @@ class Astroids extends Game {
 
    }
 
-   // checks what key is currently being pressed and does things with that information
+   // checks what key is currently being pressed and makes the 
+   // player do stuff.
    protected checkKey() : void {
-      switch(this.io.getKey()) {
-         case 38: this.player.accelerate();break;   // Accelerate forward
-         case 37: this.player.increment(-1);break;  // Decrease angle of cannon
-         case 39: this.player.increment(1);break;   // Increase angle of cannon
-         case 32: this.player.shoot();break;        // Create new bullet and add to array
-      }
+     if (this.io.isPressed(38))
+         this.player.accelerate();
+
+      if (this.io.isPressed(37))
+         this.player.increment(-1);
+
+      if (this.io.isPressed(39))
+         this.player.increment(1);
+      
+      if (this.io.isPressed(32))
+         this.player.shoot();
    }
 
    /**

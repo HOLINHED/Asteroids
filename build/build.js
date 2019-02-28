@@ -68,30 +68,20 @@ var Game = (function () {
 }());
 var Input = (function () {
     function Input(p) {
+        this.key = new Array();
         this.p = p;
-        this.key = { code: 0 };
-        this.mouse = { pressed: false };
         var pointer = this.p;
         var keyPointer = this.key;
-        var mousePointer = this.mouse;
         this.p.keyPressed = function () {
-            keyPointer.code = pointer.keyCode;
+            keyPointer.push(pointer.keyCode);
         };
         this.p.keyReleased = function () {
-            keyPointer.code = 0;
-        };
-        this.p.mousePressed = function () {
-            mousePointer.pressed = true;
-        };
-        this.p.mouseReleased = function () {
-            mousePointer.pressed = false;
+            var index = keyPointer.indexOf(pointer.keyCode);
+            keyPointer.splice(index, 1);
         };
     }
-    Input.prototype.getKey = function () {
-        return this.key.code;
-    };
-    Input.prototype.isPressed = function () {
-        return this.mouse.pressed;
+    Input.prototype.isPressed = function (keycode) {
+        return this.key.indexOf(keycode) != -1;
     };
     return Input;
 }());
@@ -164,20 +154,14 @@ var Astroids = (function (_super) {
         }
     };
     Astroids.prototype.checkKey = function () {
-        switch (this.io.getKey()) {
-            case 38:
-                this.player.accelerate();
-                break;
-            case 37:
-                this.player.increment(-1);
-                break;
-            case 39:
-                this.player.increment(1);
-                break;
-            case 32:
-                this.player.shoot();
-                break;
-        }
+        if (this.io.isPressed(38))
+            this.player.accelerate();
+        if (this.io.isPressed(37))
+            this.player.increment(-1);
+        if (this.io.isPressed(39))
+            this.player.increment(1);
+        if (this.io.isPressed(32))
+            this.player.shoot();
     };
     Astroids.prototype.share = function () {
         return { bullets: this.bullets, rocks: this.rocks, score: this.score, lives: this.lives };
