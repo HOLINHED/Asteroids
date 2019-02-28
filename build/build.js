@@ -33,6 +33,12 @@ var Entity = (function () {
         var radii = (this.width + entity.getDims().w) / 2;
         return dist < radii;
     };
+    Entity.prototype.setX = function (x) {
+        this.x = x;
+    };
+    Entity.prototype.setY = function (y) {
+        this.y = y;
+    };
     Entity.prototype.setVx = function (vx) {
         this.vx = vx;
     };
@@ -246,6 +252,11 @@ var Player = (function (_super) {
                 this.context.setLives(lives - 1);
                 this.coolDown = 20;
                 this.mortal = false;
+                this.setX(this.p.width / 2);
+                this.setY(this.p.height / 2);
+                this.setVx(0);
+                this.setVy(0);
+                this.angle = -this.p.PI / 2;
             }
         }
         this.p.push();

@@ -83,6 +83,14 @@ class Player extends Entity {
             this.context.setLives(lives - 1);
             this.coolDown = 20;
             this.mortal = false;
+
+            // Resets player on death
+            this.setX(this.p.width / 2);
+            this.setY(this.p.height / 2);
+            this.setVx(0);
+            this.setVy(0);
+            this.angle = -this.p.PI / 2;
+
          }
 
       }

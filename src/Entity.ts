@@ -92,7 +92,21 @@ abstract class Entity {
    }
 
    /**
-    * @param {number} vx The new Y velocity to set.
+    * @param {number} x The new X position to set.
+    */
+   public setX(x: number) : void {
+      this.x = x;
+   }
+
+   /**
+    * @param {number} x The new Y position to set.
+    */
+   public setY(y: number) : void {
+      this.y = y;
+   }
+
+   /**
+    * @param {number} vx The new X velocity to set.
     */
    public setVx(vx: number) : void {
       this.vx = vx;
