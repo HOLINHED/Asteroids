@@ -33,13 +33,32 @@ var sketch = (p: p5) => {
 
         // Alerts user when the game ends, and creates a new game instance.
         if (!game.isRunning()) {
-            alert('GAME OVER!');
-            game = new Astroids(p);
-            game.setup();
+
+            p.push();
+
+            p.fill(255);
+            p.textSize(42);
+            p.textAlign('center');
+            p.fill('yellow');
+            p.text('GAME OVER', p.width / 2, p.height / 2);
+            p.textSize(20);
+            p.fill('white');
+            p.text('press space to restart', p.width / 2, p.height / 2 + 26);
+
+            p.pop();
+
+            p.keyPressed = function() {
+                if (p.keyCode == 32) {
+                    game = new Astroids(p);
+                    game.setup();
+                }
+            }
         }
 
         // Updates game.
-        game.update();
+        if (game.isRunning()) {
+            game.update();
+        }
     }
 }
 
