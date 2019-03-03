@@ -219,16 +219,20 @@ var Player = (function (_super) {
     Player.prototype.draw = function () {
         if (this.acceleration <= 0) {
             if (this.getV().vx > 0) {
-                this.setVx(this.getV().vx - 0.0512345);
+                var vx_1 = this.getV().vx - 0.051;
+                this.setVx(parseFloat(vx_1.toFixed(1)));
             }
             if (this.getV().vy > 0) {
-                this.setVy(this.getV().vy - 0.0512345);
+                var vy_1 = this.getV().vy - 0.051;
+                this.setVy(parseFloat(vy_1.toFixed(1)));
             }
             if (this.getV().vx < 0) {
-                this.setVx(this.getV().vx + 0.0512345);
+                var vx_2 = this.getV().vx + 0.051;
+                this.setVx(parseFloat(vx_2.toFixed(1)));
             }
             if (this.getV().vy < 0) {
-                this.setVy(this.getV().vy + 0.0512345);
+                var vy_2 = this.getV().vy + 0.051;
+                this.setVy(parseFloat(vy_2.toFixed(1)));
             }
         }
         var ax = this.acceleration * this.p.cos(this.angle);

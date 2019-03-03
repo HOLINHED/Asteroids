@@ -12,7 +12,7 @@ class Player extends Entity {
 
       const RADIUS = 35;
 
-      super(x,y,RADIUS, RADIUS, p,c);
+      super(x,y,RADIUS, RADIUS, p, c);
 
       this.radius = RADIUS;
       this.angle = -this.p.PI / 2;
@@ -30,19 +30,23 @@ class Player extends Entity {
       if (this.acceleration <= 0) {
 				
          if (this.getV().vx > 0) {
-            this.setVx(this.getV().vx - 0.0512345);
+            const vx: number = this.getV().vx - 0.051;
+            this.setVx(parseFloat(vx.toFixed(1)));
         }
          
          if (this.getV().vy > 0) {
-            this.setVy(this.getV().vy - 0.0512345);
+            const vy: number = this.getV().vy - 0.051;
+            this.setVy(parseFloat(vy.toFixed(1)));
          }
          
          if (this.getV().vx < 0) {
-            this.setVx(this.getV().vx + 0.0512345);
+            const vx: number = this.getV().vx + 0.051;
+            this.setVx(parseFloat(vx.toFixed(1)));
         }
          
          if (this.getV().vy < 0) {
-            this.setVy(this.getV().vy + 0.0512345);
+            const vy: number = this.getV().vy + 0.051;
+            this.setVy(parseFloat(vy.toFixed(1)));
          }
          
       }
